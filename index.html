@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Banana OS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/window.css">
+</head>
+<body>
+  <div id="desktop">
+    <!-- Desktop Icons -->
+    <div class="desktop-icons">
+      <div class="desktop-shortcut" data-app="browser">
+        <div class="shortcut-icon">🌐</div>
+        <div class="shortcut-label">Browser</div>
+      </div>
+      <div class="desktop-shortcut" data-app="virtualbox">
+        <div class="shortcut-icon">📦</div>
+        <div class="shortcut-label">VirtualBox</div>
+      </div>
+      <div class="desktop-shortcut" data-app="terminal">
+        <div class="shortcut-icon">💻</div>
+        <div class="shortcut-label">Terminal</div>
+      </div>
+      <div class="desktop-shortcut" data-app="files">
+        <div class="shortcut-icon">📁</div>
+        <div class="shortcut-label">Files</div>
+      </div>
+      <div class="desktop-shortcut" data-app="editor">
+        <div class="shortcut-icon">📝</div>
+        <div class="shortcut-label">Editor</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Start Menu -->
+  <div id="start-menu" class="hidden">
+    <div class="start-header">
+      <span class="banana-brand-icon">🍌</span>
+      <div>
+        <div class="banana-brand-title">Banana OS</div>
+        <small>v1.0 Pro</small>
+      </div>
+    </div>
+    <div class="start-apps-list">
+      <div class="start-item" data-app="browser"><span>🌐</span> Guest Browser</div>
+      <div class="start-item" data-app="virtualbox"><span>📦</span> VirtualBox Sandbox</div>
+      <div class="start-item" data-app="terminal"><span>💻</span> Terminal Shell</div>
+      <div class="start-item" data-app="files"><span>📁</span> File Manager</div>
+      <div class="start-item" data-app="editor"><span>📝</span> Text Editor</div>
+    </div>
+  </div>
+
+  <!-- Taskbar -->
+  <div id="taskbar">
+    <button id="start-btn">🍌 <span class="start-text">Start</span></button>
+    <div id="taskbar-pills"></div>
+    <div id="tray-clock">00:00 AM</div>
+  </div>
+
+  <script type="module" src="js/os.js"></script>
+</body>
+</html>
