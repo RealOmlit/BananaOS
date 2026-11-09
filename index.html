@@ -1,64 +1,494 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Banana OS</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/window.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#11120e">
+<meta name="description" content="BananaOS — a playful, fully interactive operating system for your browser.">
+<title>BananaOS — a little more a-peeling</title>
+<style>
+:root{color-scheme:dark;--yellow:#f9d94c;--yellow2:#ffe98a;--ink:#12130e;--muted:#a9aa99;--glass:rgba(25,27,21,.84);--line:rgba(255,255,255,.1);--green:#a6ce70;--taskbar:rgba(18,19,15,.78);--wall:#151810;--shadow:0 24px 80px #0008,0 3px 14px #0004;--accent:var(--yellow)}
+*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden}body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--wall);color:#f5f3e8;font-size:13px}button,input,textarea,select{font:inherit}button{color:inherit}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}button{cursor:pointer}::selection{background:#f9d94c55}
+#desktop{position:relative;width:100%;height:calc(100% - 58px);overflow:hidden;background:radial-gradient(ellipse at 68% 28%,#4c5229 0,transparent 28%),radial-gradient(ellipse at 80% 75%,#293922 0,transparent 36%),radial-gradient(ellipse at 19% 75%,#312719 0,transparent 36%),linear-gradient(140deg,#26281c 0%,#171a13 46%,#10140f 100%)}
+#desktop:before{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 39%,#d1bf5410 39.1%,transparent 62%),radial-gradient(ellipse at 64% 53%,#edd96911,transparent 48%);pointer-events:none}
+.wallpaper-orbit{position:absolute;width:min(62vw,760px);aspect-ratio:1;border:1px solid #e8d78612;border-radius:50%;right:5%;top:50%;transform:translateY(-56%);pointer-events:none}
+.wallpaper-orbit:before,.wallpaper-orbit:after{content:"";position:absolute;border:1px solid #e8d78614;border-radius:50%;inset:12%}.wallpaper-orbit:after{inset:25%;background:radial-gradient(circle,#d1be4930 0,transparent 68%);border-color:#e8d78618}
+.wallpaper-wordmark{position:absolute;right:9%;bottom:9%;font-size:clamp(34px,7vw,88px);line-height:.9;letter-spacing:-.08em;font-weight:750;color:#f8eebc10;pointer-events:none}
+.wallpaper-wordmark small{display:block;text-align:right;font-size:10px;letter-spacing:.28em;color:#e3d89135;margin-top:16px}
+.desktop-icons{position:absolute;z-index:1;top:24px;left:22px;display:grid;grid-template-columns:repeat(1,82px);grid-auto-rows:94px;gap:4px}
+.desktop-icon{width:80px;height:88px;padding:8px 4px;border:1px solid transparent;border-radius:12px;background:transparent;color:#fff;text-align:center;text-shadow:0 2px 6px #000b;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;touch-action:none;transition:background .16s,border-color .16s}
+.desktop-icon:hover,.desktop-icon:focus-visible{background:#ffffff12;border-color:#ffffff20}
+.icon-tile{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:23px;background:linear-gradient(145deg,#ffffff22,#ffffff08);border:1px solid #ffffff24;box-shadow:0 8px 20px #0003;text-shadow:none}
+.icon-label{font-size:11px;font-weight:550;letter-spacing:.01em}.emoji{font-style:normal}
+#taskbar{position:fixed;z-index:10000;bottom:0;left:0;right:0;height:58px;padding:0 14px;display:flex;align-items:center;gap:10px;background:var(--taskbar);border-top:1px solid #ffffff12;backdrop-filter:blur(26px) saturate(1.25);-webkit-backdrop-filter:blur(26px) saturate(1.25)}
+.task-btn{height:40px;padding:0 13px;border:1px solid transparent;border-radius:12px;background:transparent;color:#e8e7dc;display:flex;align-items:center;gap:9px;white-space:nowrap;transition:.16s}
+.task-btn:hover,.task-btn.selected{background:#ffffff10;border-color:#ffffff13}.start-btn .start-mark{font-size:21px}.start-btn span:last-child{font-weight:680}
+#task-apps{display:flex;align-items:center;gap:5px;flex:1;overflow:auto;scrollbar-width:none}#task-apps::-webkit-scrollbar{display:none}
+.task-app{height:36px;max-width:180px;padding:0 12px;border:1px solid transparent;border-radius:10px;background:transparent;display:flex;align-items:center;gap:8px;white-space:nowrap;color:#c4c4b7}.task-app:hover{background:#ffffff0b}.task-app.active{color:var(--yellow2);background:#f9d94c12;border-color:#f9d94c2b}
+.tray{height:44px;display:flex;align-items:center;gap:5px}.tray-btn{height:38px;min-width:36px;padding:0 9px;border:1px solid transparent;border-radius:10px;background:transparent;color:#deded2}.tray-btn:hover,.tray-btn.selected{background:#ffffff10;border-color:#ffffff12}.clock-button{min-width:105px;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;gap:2px;font-size:11px;line-height:1.15}.clock-button strong{font-weight:620}.clock-button span{font-size:10px;color:#b9baaa}
+.panel{position:fixed;z-index:10002;bottom:68px;background:rgba(27,29,22,.96);border:1px solid #ffffff18;border-radius:18px;box-shadow:var(--shadow);backdrop-filter:blur(26px);animation:panel-in .16s ease-out}@keyframes panel-in{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+#start-menu{left:14px;width:min(350px,calc(100vw - 28px));padding:16px}.hidden{display:none!important}.start-head{display:flex;align-items:center;gap:12px;padding:6px 6px 15px;border-bottom:1px solid var(--line)}.start-logo{width:42px;height:42px;border-radius:14px;background:#f9d94c18;display:grid;place-items:center;font-size:23px}.start-head strong{font-size:14px}.start-head small{display:block;color:var(--muted);font-size:11px;margin-top:3px}.start-search{width:100%;margin:13px 0 9px;padding:10px 12px;border-radius:10px;border:1px solid #ffffff14;background:#ffffff09;color:#fff}.start-section{font-size:10px;text-transform:uppercase;letter-spacing:.15em;color:#989a87;padding:9px 5px 6px}.start-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px}.start-app{display:flex;align-items:center;gap:10px;padding:9px 8px;border:0;border-radius:10px;background:transparent;text-align:left;color:#eae9dd}.start-app:hover{background:#ffffff0d}.start-app i{font-size:17px;font-style:normal}.start-foot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);margin-top:12px;padding-top:12px;color:#a8a999;font-size:11px}.start-foot button{background:transparent;border:0;color:#e7e5d8}
+#quick-panel{right:13px;width:min(332px,calc(100vw - 26px));padding:16px}.quick-title{font-size:14px;font-weight:650;margin:2px 2px 14px}.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.quick-tile{min-height:72px;border:1px solid #ffffff13;border-radius:13px;background:#ffffff08;text-align:left;padding:12px;display:flex;flex-direction:column;justify-content:space-between}.quick-tile.on{background:#f9d94c20;border-color:#f9d94c48}.quick-tile .qt-icon{font-size:17px}.quick-tile .qt-label{font-size:11px;color:#d4d3c7}.volume-row{display:flex;align-items:center;gap:12px;margin:17px 3px 4px;color:#cbcbbc}.volume-row input{flex:1;accent-color:var(--yellow)}
+.os-window{position:absolute;z-index:10;min-width:300px;min-height:210px;display:flex;flex-direction:column;overflow:hidden;border:1px solid #ffffff1b;border-radius:15px;background:var(--glass);backdrop-filter:blur(30px) saturate(1.18);-webkit-backdrop-filter:blur(30px) saturate(1.18);box-shadow:var(--shadow);animation:window-in .2s cubic-bezier(.2,.8,.2,1);transition:border-color .15s,box-shadow .15s}
+@keyframes window-in{from{opacity:0;transform:translateY(9px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+.os-window.active{border-color:#f9d94c45;box-shadow:0 26px 90px #0009,0 0 0 1px #f9d94c12}.os-window.minimized{display:none}.os-window.maximized{top:0!important;left:0!important;width:100%!important;height:100%!important;max-width:none!important;border-radius:0}
+.window-header{height:46px;min-height:46px;padding:0 12px 0 16px;display:flex;align-items:center;justify-content:space-between;background:#ffffff05;border-bottom:1px solid #ffffff0c;cursor:grab;touch-action:none}.window-header:active{cursor:grabbing}.window-title{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:620;color:#f2f0e5}.window-title .emoji{font-size:16px}.window-controls{display:flex;gap:6px}.win-btn{width:27px;height:26px;border:0;border-radius:8px;background:#ffffff0a;color:#c9c8ba;font-size:12px;display:grid;place-items:center}.win-btn:hover{background:#ffffff1a;color:white}.win-btn.close-btn:hover{background:#e3514b;color:white}.window-body{position:relative;flex:1;min-height:0;overflow:auto}.window-resize-handle{position:absolute;right:1px;bottom:1px;width:17px;height:17px;z-index:2;cursor:nwse-resize;touch-action:none}.window-resize-handle:after{content:"";position:absolute;right:4px;bottom:4px;width:6px;height:6px;border-right:2px solid #ffffff55;border-bottom:2px solid #ffffff55}
+.app{height:100%;min-height:0}.app-button{border:1px solid #ffffff17;background:#ffffff09;color:#edeadd;border-radius:9px;padding:8px 12px}.app-button:hover{background:#ffffff16}.app-button.primary{background:var(--yellow);color:#202014;border-color:transparent;font-weight:650}.app-button.primary:hover{filter:brightness(1.06)}.app-input,.app-select{min-width:0;border:1px solid #ffffff18;background:#10110ee8;color:#f5f2e7;border-radius:9px;padding:9px 11px}.muted{color:var(--muted)}
+.browser{display:flex;flex-direction:column;background:#f7f6f1;color:#24251f}.browser-toolbar{min-height:53px;padding:8px 12px;display:flex;align-items:center;gap:7px;background:#eae9e2;border-bottom:1px solid #d8d7ce}.browser-toolbar .app-button{color:#45463e;background:#ffffffbd;border-color:#d8d7ce;padding:7px 10px}.browser-toolbar .app-button:disabled{opacity:.45;cursor:default}.address-wrap{flex:1;display:flex;min-width:90px;align-items:center;border:1px solid #d8d7ce;border-radius:9px;background:#fff}.address-icon{padding-left:11px;color:#73746a}.browser-address{width:100%;border:0;background:transparent;color:#333;padding:9px 8px;outline:none!important}.browser-address:focus{box-shadow:inset 0 0 0 1px #b4a83e;border-radius:9px}.browser-mode{max-width:130px;padding:8px 7px;background:#fff;color:#3b3c34;border:1px solid #d8d7ce;border-radius:9px}.browser-view{position:relative;flex:1;min-height:0;overflow:auto;background:#fff}.browser-note{margin:0;padding:7px 13px;background:#f5f0d7;color:#656143;font-size:10px;border-bottom:1px solid #e8dfb9}.mock-page{min-height:100%;padding:28px 6%;font-family:Arial,sans-serif;color:#333}.mock-google{display:flex;min-height:100%;flex-direction:column;align-items:center;justify-content:center;padding-bottom:8%}.google-wordmark{font-size:clamp(44px,9vw,76px);letter-spacing:-.09em;font-weight:650;margin-bottom:25px}.google-wordmark b:nth-child(1){color:#4285f4}.google-wordmark b:nth-child(2){color:#ea4335}.google-wordmark b:nth-child(3){color:#fbbc05}.google-wordmark b:nth-child(4){color:#4285f4}.google-wordmark b:nth-child(5){color:#34a853}.google-wordmark b:nth-child(6){color:#ea4335}.mock-search-form{width:min(580px,100%);display:flex;gap:8px}.mock-search-form input{flex:1;min-width:0;padding:13px 18px;border:1px solid #ddd;border-radius:25px;color:#222}.mock-search-form input:focus{outline:none;box-shadow:0 2px 12px #0002}.mock-search-form button,.mock-chip{border:1px solid #e5e5e5;border-radius:8px;padding:9px 14px;background:#f8f8f8;color:#333}.mock-hint{margin-top:25px;color:#777;font-size:12px}.search-results{width:min(650px,100%);margin:26px auto}.search-result{margin:0 0 23px}.search-result a{font-size:18px;color:#1a0dab;text-decoration:none}.search-result p{margin:5px 0;color:#4d5156;line-height:1.5}.youtube-page{background:#fff}.youtube-top{display:flex;align-items:center;gap:12px;border-bottom:1px solid #eee;padding-bottom:13px}.youtube-logo{font-size:19px;font-weight:750;color:#222}.youtube-logo span{background:#f00;color:white;border-radius:6px;padding:3px 7px;margin-right:5px}.youtube-search{flex:1;border:1px solid #ddd;border-radius:22px;padding:9px 15px;color:#333}.video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:18px;margin-top:20px}.video-card{border:1px solid #eee;border-radius:11px;overflow:hidden;cursor:pointer;background:white}.video-thumb{height:118px;display:grid;place-items:center;font-size:40px;background:linear-gradient(135deg,#e9e1a8,#c9d6bc)}.video-card:nth-child(2n) .video-thumb{background:linear-gradient(135deg,#d9bc9e,#b4c6cf)}.video-meta{padding:10px}.video-meta strong{font-size:13px}.video-meta small{display:block;color:#777;margin-top:5px}.wiki-page{max-width:900px;margin:0 auto;font-family:Georgia,serif;line-height:1.7}.wiki-head{border-bottom:1px solid #aaa;padding-bottom:10px}.wiki-head h1{font-weight:400;font-size:30px;margin:0}.wiki-search{float:right;padding:8px;border:1px solid #aaa;color:#222}.wiki-page h2{border-bottom:1px solid #aaa;padding-bottom:5px;font-weight:400}.wiki-page a{color:#365f91}.browser-external{height:100%;min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px;color:#4b4c44}.browser-external .external-icon{font-size:36px;margin-bottom:12px}.browser-external h2{font-size:20px;font-weight:600}.browser-external p{max-width:440px;line-height:1.6;color:#777}.browser-frame{width:100%;height:100%;min-height:320px;border:0;background:#fff}
+.assistant{height:100%;display:flex;flex-direction:column;background:radial-gradient(ellipse at 50% 0,#e9d5570d,transparent 48%)}.assistant-top{display:flex;align-items:center;gap:10px;padding:15px 20px;border-bottom:1px solid var(--line)}.assistant-avatar{width:37px;height:37px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(145deg,#f9df72,#9cae61);font-size:20px}.assistant-top strong{font-size:13px}.assistant-top small{display:block;color:var(--muted);font-size:10px;margin-top:3px}.online-dot{margin-left:auto;font-size:10px;color:#b3d58c}.online-dot:before{content:"";display:inline-block;width:6px;height:6px;margin-right:6px;border-radius:50%;background:#a6ce70}.chat-scroll{flex:1;overflow:auto;padding:17px 19px;display:flex;flex-direction:column;gap:13px}.chat-message{max-width:88%;padding:11px 13px;border:1px solid #ffffff12;border-radius:13px;background:#ffffff09;color:#e8e6db;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}.chat-message.user{align-self:flex-end;background:#f9d94c19;border-color:#f9d94c29}.chat-message.assistant{align-self:flex-start}.chat-message code{font-family:ui-monospace,monospace;font-size:.92em;color:#e9df9c}.suggestion-row{display:flex;flex-wrap:wrap;gap:7px;padding:0 18px 11px}.suggestion{background:transparent;border:1px solid #ffffff1b;border-radius:20px;padding:7px 10px;font-size:10px;color:#c7c5b7}.suggestion:hover{border-color:#f9d94c65;color:var(--yellow2)}.chat-compose{display:flex;gap:8px;padding:12px 15px;border-top:1px solid var(--line)}.chat-compose input{flex:1;min-width:0;background:#ffffff08;border:1px solid #ffffff17;border-radius:11px;padding:11px 13px;color:#fff}
+.settings{padding:23px;max-width:680px;margin:auto}.settings h2{margin:0 0 5px;font-size:19px}.settings-intro{margin:0 0 21px;color:var(--muted)}.setting-row{display:flex;align-items:center;gap:15px;padding:14px 0;border-bottom:1px solid #ffffff10}.setting-icon{width:35px;height:35px;display:grid;place-items:center;border-radius:11px;background:#ffffff0b;font-size:17px}.setting-copy{flex:1}.setting-copy strong{font-size:12px}.setting-copy small{display:block;margin-top:4px;color:var(--muted);line-height:1.4}.switch{width:42px;height:24px;border:0;border-radius:15px;background:#494a40;padding:3px;transition:.15s}.switch:after{content:"";display:block;width:18px;height:18px;border-radius:50%;background:white;transition:.15s}.switch.on{background:#b6a437}.switch.on:after{transform:translateX(18px)}
+.store{padding:22px;max-width:850px;margin:auto}.store-hero{padding:20px;border-radius:16px;background:linear-gradient(115deg,#f4d8591f,#9bb97712);border:1px solid #f9d94c21}.store-hero h2{margin:0 0 6px;font-size:20px}.store-hero p{margin:0;color:var(--muted)}.store-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin-top:16px}.store-card{padding:14px;border:1px solid #ffffff12;border-radius:13px;background:#ffffff06}.store-card-head{display:flex;align-items:center;gap:10px}.store-card-head i{font-size:23px;font-style:normal}.store-card-head strong{font-size:12px}.store-card p{min-height:34px;color:var(--muted);font-size:11px;line-height:1.5}.store-card .app-button{font-size:11px;padding:7px 10px}
+.terminal{height:100%;display:flex;flex-direction:column;background:#10120f;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.terminal-bar{padding:10px 14px;color:#a8aa98;border-bottom:1px solid #ffffff12;font:11px ui-sans-serif,system-ui}.terminal-output{flex:1;overflow:auto;padding:15px 16px;color:#c8d1b3;white-space:pre-wrap;line-height:1.65;font-size:12px}.terminal-line{color:#f2df7b}.terminal-form{display:flex;align-items:center;gap:7px;padding:10px 14px;border-top:1px solid #ffffff12}.terminal-prompt{color:#a7cd73;white-space:nowrap;font-size:12px}.terminal-input{flex:1;min-width:0;border:0;outline:none!important;background:transparent;color:#fff;font:12px ui-monospace,monospace}
+.vbox{height:100%;display:flex;flex-direction:column;background:#151713}.vbox-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding:11px;border-bottom:1px solid #ffffff12}.vbox-toolbar label{font-size:11px;color:#c9c7ba}.vbox-toolbar select{max-width:160px}.vbox-status{margin-left:auto;color:#aab09b;font-size:10px}.vbox-screen{flex:1;min-height:0;overflow:auto;padding:18px;background:#090a09}.vbox-splash{height:100%;min-height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#c4c5b7;text-align:center}.vbox-splash b{font-size:16px;color:#f4df71}.vbox-splash p{max-width:320px;color:#96988c;line-height:1.6}.dos{height:100%;font:12px/1.65 ui-monospace,monospace;color:#c6d6c1;white-space:pre-wrap}.dos .dos-welcome{color:#a9d681}.dos-form{display:flex;gap:6px;margin-top:5px}.dos-form span{color:#e5d764;white-space:nowrap}.dos-form input{flex:1;min-width:0;border:0;background:transparent;color:#fff;outline:none!important;font:inherit}.linux{min-height:100%;display:flex;flex-direction:column;background:linear-gradient(145deg,#dce5ed,#bacbd9);color:#273347;border-radius:8px;overflow:hidden}.linux-bar{padding:9px 12px;background:#25354a;color:white;font-size:10px}.linux-desktop{flex:1;display:flex;align-content:flex-start;flex-wrap:wrap;gap:12px;padding:17px}.linux-shortcut{width:75px;border:0;background:transparent;color:#29364a;text-align:center;font-size:11px}.linux-shortcut span{display:block;font-size:28px;margin-bottom:5px}.linux-clock{margin-left:auto}
+.files-app{height:100%;display:flex;flex-direction:column}.files-toolbar{display:flex;gap:8px;padding:10px;border-bottom:1px solid var(--line)}.files-path{flex:1;color:#c9c8bc}.files-grid{flex:1;overflow:auto;padding:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(95px,1fr));align-content:start;gap:8px}.file-item{min-height:78px;border:1px solid transparent;border-radius:10px;background:transparent;color:#eee;text-align:center;padding:10px 5px}.file-item:hover{background:#ffffff0b;border-color:#ffffff13}.file-item span{display:block;font-size:25px;margin-bottom:6px}.file-item small{font-size:10px;overflow-wrap:anywhere}.notes{height:100%;display:flex;flex-direction:column}.notes input{border:0;border-bottom:1px solid var(--line);background:#ffffff05;padding:12px;color:#fff;font-weight:650}.notes textarea{flex:1;resize:none;border:0;background:#ffffff03;padding:14px;color:#efeee5;line-height:1.6}
+.toast{position:fixed;z-index:20000;bottom:74px;left:50%;transform:translateX(-50%);padding:11px 16px;border:1px solid #ffffff20;border-radius:12px;background:#25271ff2;box-shadow:var(--shadow);font-size:12px;animation:panel-in .18s ease-out}
+body.light{color-scheme:light;--glass:rgba(248,248,241,.9);--taskbar:rgba(245,245,237,.82);--line:rgba(20,20,10,.12);--wall:#d8d8c8;color:#222318}
+body.light #desktop{background:radial-gradient(ellipse at 68% 28%,#c2c88a 0,transparent 28%),radial-gradient(ellipse at 80% 75%,#b1c2a1 0,transparent 36%),linear-gradient(140deg,#d8d9bf,#c3cdb3 55%,#a7b6a1)}body.light .desktop-icon{color:#27291d;text-shadow:0 1px 3px #fff9}body.light .wallpaper-wordmark{color:#22231812}body.light .wallpaper-wordmark small{color:#22231835}body.light #taskbar{color:#28291e}body.light .task-btn,body.light .tray-btn{color:#3f4035}body.light .task-app{color:#505144}body.light .task-app.active{color:#625517;background:#dec34221;border-color:#a88b2555}body.light .panel{background:#f8f8f1f5;color:#28291f;border-color:#00000018}body.light .start-app,body.light .start-foot button{color:#34352c}body.light .quick-tile{color:#27281e;border-color:#00000017;background:#00000005}body.light .quick-tile.on{background:#dfc44330}body.light .quick-tile .qt-label{color:#505144}body.light .window-title{color:#292a21}body.light .os-window{border-color:#0000001c}body.light .win-btn{color:#46473d;background:#00000009}body.light .app-button{color:#33342a;background:#00000008;border-color:#00000018}body.light .app-input,body.light .app-select{color:#222;background:#fff;border-color:#00000022}body.light .settings .setting-copy strong{color:#303126}body.light .store-card,body.light .setting-icon{background:#00000006;border-color:#00000016}body.light .assistant{background:#e1d2650a}body.light .assistant-top strong{color:#2c2d22}body.light .chat-message{color:#303126;background:#00000008}body.light .chat-message.user{background:#dfc44336}body.light .chat-compose input{color:#222;background:#00000008;border-color:#00000020}body.light .suggestion{color:#414236;border-color:#00000022}
+@media(max-width:600px){#taskbar{height:54px;padding:0 7px;gap:4px}.desktop-icons{top:12px;left:9px;grid-template-columns:repeat(2,76px);grid-auto-rows:86px}.desktop-icon{width:72px;height:80px}.clock-button{min-width:66px;padding:0 5px}.clock-button span{font-size:9px}.task-btn{padding:0 9px}.start-btn span:last-child{display:none}.task-app{max-width:92px;padding:0 8px;font-size:10px}.task-app .task-name{overflow:hidden;text-overflow:ellipsis}.os-window:not(.maximized){left:8px!important;top:12px!important;width:calc(100% - 16px)!important;height:calc(100% - 24px)!important;min-width:0;min-height:0}.window-resize-handle{display:none}.browser-mode{max-width:91px;font-size:10px}.browser-toolbar{gap:4px;padding:6px}.browser-toolbar .app-button{padding:7px}.store,.settings{padding:16px}.mock-page{padding:22px 5%}}
+.os-window{transition:border-color .15s,box-shadow .15s,opacity .14s,transform .14s}
+.browser-external{position:absolute;z-index:2;inset:auto 8px 8px;height:auto;min-height:0;flex-direction:row;align-items:center;gap:12px;text-align:left;padding:11px 13px;border:1px solid #e3dfce;border-radius:12px;background:#fffefaed;box-shadow:0 3px 14px #0002}
+.browser-external .external-icon{margin:0;font-size:20px}.browser-external h2{margin:0;font-size:12px;white-space:nowrap}.browser-external p{flex:1;margin:0;font-size:10px}.browser-external .app-button{white-space:nowrap;padding:7px 9px;font-size:10px}.browser-external .dismiss-notice{border:0;background:transparent;color:#62635b;padding:5px}
+@media(max-width:600px){.browser-external{inset:auto 5px 5px;flex-wrap:wrap;gap:7px;padding:8px}.browser-external p{flex-basis:100%;order:2}.browser-external h2{flex:1}.browser-external .app-button{font-size:9px;padding:6px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
 </head>
 <body>
-  <div id="desktop">
-    <!-- Desktop Icons -->
-    <div class="desktop-icons">
-      <div class="desktop-shortcut" data-app="browser">
-        <div class="shortcut-icon">🌐</div>
-        <div class="shortcut-label">Browser</div>
-      </div>
-      <div class="desktop-shortcut" data-app="virtualbox">
-        <div class="shortcut-icon">📦</div>
-        <div class="shortcut-label">VirtualBox</div>
-      </div>
-      <div class="desktop-shortcut" data-app="terminal">
-        <div class="shortcut-icon">💻</div>
-        <div class="shortcut-label">Terminal</div>
-      </div>
-      <div class="desktop-shortcut" data-app="files">
-        <div class="shortcut-icon">📁</div>
-        <div class="shortcut-label">Files</div>
-      </div>
-      <div class="desktop-shortcut" data-app="editor">
-        <div class="shortcut-icon">📝</div>
-        <div class="shortcut-label">Editor</div>
-      </div>
-    </div>
+<main id="desktop" aria-label="BananaOS desktop">
+  <div class="wallpaper-orbit" aria-hidden="true"></div><div class="wallpaper-wordmark" aria-hidden="true">bananaOS<small>A LITTLE MORE A-PEELING</small></div>
+  <div class="desktop-icons" aria-label="Desktop applications">
+    <button class="desktop-icon" data-app="browser" title="Double-click to open BananaBrowse"><span class="icon-tile">🌐</span><span class="icon-label">BananaBrowse</span></button>
+    <button class="desktop-icon" data-app="virtualbox" title="Double-click to open Banana VirtualBox"><span class="icon-tile">📦</span><span class="icon-label">VirtualBox</span></button>
+    <button class="desktop-icon" data-app="terminal" title="Double-click to open AI Terminal"><span class="icon-tile">🧠</span><span class="icon-label">AI Terminal</span></button>
+    <button class="desktop-icon" data-app="settings" title="Double-click to open Settings"><span class="icon-tile">⚙️</span><span class="icon-label">Settings</span></button>
+    <button class="desktop-icon" data-app="store" title="Double-click to open App Store"><span class="icon-tile">🛍️</span><span class="icon-label">App Store</span></button>
+    <button class="desktop-icon" data-app="files" title="Double-click to open Files"><span class="icon-tile">📁</span><span class="icon-label">My Files</span></button>
   </div>
-
-  <!-- Start Menu -->
-  <div id="start-menu" class="hidden">
-    <div class="start-header">
-      <span class="banana-brand-icon">🍌</span>
-      <div>
-        <div class="banana-brand-title">Banana OS</div>
-        <small>v1.0 Pro</small>
-      </div>
-    </div>
-    <div class="start-apps-list">
-      <div class="start-item" data-app="browser"><span>🌐</span> Guest Browser</div>
-      <div class="start-item" data-app="virtualbox"><span>📦</span> VirtualBox Sandbox</div>
-      <div class="start-item" data-app="terminal"><span>💻</span> Terminal Shell</div>
-      <div class="start-item" data-app="files"><span>📁</span> File Manager</div>
-      <div class="start-item" data-app="editor"><span>📝</span> Text Editor</div>
-    </div>
+</main>
+<div id="start-menu" class="panel hidden" role="dialog" aria-label="Start menu">
+  <div class="start-head"><div class="start-logo">🍌</div><div><strong>BananaOS</strong><small>Your delightfully different desktop</small></div></div>
+  <input id="start-search" class="start-search" type="search" placeholder="Search apps…" aria-label="Search apps">
+  <div class="start-section">Pinned apps</div><div id="start-grid" class="start-grid"></div>
+  <div class="start-foot"><span>BananaOS · Web Edition</span><button id="restart-btn" type="button">↻ Restart desktop</button></div>
+</div>
+<div id="quick-panel" class="panel hidden" role="dialog" aria-label="Quick settings">
+  <div class="quick-title">Quick settings</div>
+  <div class="quick-grid">
+    <button class="quick-tile" data-toggle="wifi"><span class="qt-icon">◉</span><span class="qt-label">Wi-Fi · <b>On</b></span></button>
+    <button class="quick-tile" data-toggle="sound"><span class="qt-icon">♫</span><span class="qt-label">Sounds · <b>On</b></span></button>
+    <button class="quick-tile" data-toggle="theme"><span class="qt-icon">◐</span><span class="qt-label">Light theme</span></button>
+    <button class="quick-tile" data-toggle="assistant"><span class="qt-icon">🧠</span><span class="qt-label">Banana Mind</span></button>
   </div>
-
-  <!-- Taskbar -->
-  <div id="taskbar">
-    <button id="start-btn">🍌 <span class="start-text">Start</span></button>
-    <div id="taskbar-pills"></div>
-    <div id="tray-clock">00:00 AM</div>
+  <label class="volume-row"><span>Volume</span><input id="volume-slider" type="range" min="0" max="100" value="35"><span id="volume-value">35%</span></label>
+</div>
+<footer id="taskbar">
+  <button id="start-btn" class="task-btn start-btn" aria-label="Open Start menu" aria-expanded="false"><span class="start-mark">🍌</span><span>Start</span></button>
+  <div id="task-apps" aria-label="Open applications"></div>
+  <div class="tray">
+    <button id="quick-btn" class="tray-btn" aria-label="Quick settings" aria-expanded="false">◉ <span>♫</span></button>
+    <button id="clock-btn" class="tray-btn clock-button" aria-label="Date and time"><strong id="clock-time">--:--</strong><span id="clock-date">---</span></button>
   </div>
+</footer>
+<div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+<script>
+(() => {
+  "use strict";
+  const $ = (s, root = document) => root.querySelector(s);
+  const $$ = (s, root = document) => [...root.querySelectorAll(s)];
+  const escapeHTML = value => String(value).replace(/[&<>"']/g, char => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[char]));
+  const apps = [
+    { id:"browser", name:"BananaBrowse", icon:"🌐", description:"A little window to the web." },
+    { id:"virtualbox", name:"Banana VirtualBox", icon:"📦", description:"Boot a tiny DOS or Linux desktop." },
+    { id:"assistant", name:"Banana Mind", icon:"🧠", description:"Your helpful, banana-brained copilot." },
+    { id:"terminal", name:"AI Terminal", icon:"⌨️", description:"A friendly command line with Banana Mind built in." },
+    { id:"settings", name:"Settings", icon:"⚙️", description:"Make your desktop feel like yours." },
+    { id:"store", name:"App Store", icon:"🛍️", description:"Discover more desktop goodies." },
+    { id:"files", name:"My Files", icon:"📁", description:"Browse your little local filesystem." },
+    { id:"notes", name:"Notes", icon:"📝", description:"A tidy place for your thoughts." },
+    { id:"calculator", name:"Calculator", icon:"🧮", description:"Quick, sensible arithmetic." }
+  ];
+  const state = {
+    windows:new Map(), active:null, z:20, audio:null,
+    wifi:localStorage.getItem("banana-wifi") !== "off",
+    sound:localStorage.getItem("banana-sound") !== "off",
+    theme:localStorage.getItem("banana-theme") || "dark",
+    volume:Number(localStorage.getItem("banana-volume") ?? 35),
+    installed:new Set(JSON.parse(localStorage.getItem("banana-installed") || '["browser","virtualbox","assistant","terminal","settings","store","files"]')),
+    files:JSON.parse(localStorage.getItem("banana-files") || '{"welcome.txt":"Welcome to BananaOS!\\n\\nA tiny, friendly computer in your browser.\\n\\nTry Banana Mind, boot a virtual machine, or browse the little web."}')
+  };
+  const desktop = $("#desktop"), startMenu = $("#start-menu"), quickPanel = $("#quick-panel");
+  let toastTimer;
+  function toast(message) {
+    const el = $("#toast"); el.textContent = message; el.classList.remove("hidden");
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.add("hidden"), 2400);
+  }
+  function beep(kind = "tap") {
+    if (!state.sound || state.volume === 0) return;
+    try {
+      state.audio ||= new (window.AudioContext || window.webkitAudioContext)();
+      if (state.audio.state === "suspended") state.audio.resume();
+      const oscillator = state.audio.createOscillator(), gain = state.audio.createGain();
+      oscillator.type = "sine"; oscillator.frequency.value = kind === "error" ? 185 : kind === "boot" ? 620 : 420;
+      gain.gain.setValueAtTime(Math.min(.035, state.volume / 2200), state.audio.currentTime);
+      gain.gain.exponentialRampToValueAtTime(.0001, state.audio.currentTime + (kind === "boot" ? .2 : .08));
+      oscillator.connect(gain); gain.connect(state.audio.destination); oscillator.start(); oscillator.stop(state.audio.currentTime + (kind === "boot" ? .2 : .08));
+    } catch (error) { console.warn("Audio feedback is unavailable.", error); }
+  }
+  function saveSettings() {
+    localStorage.setItem("banana-wifi", state.wifi ? "on" : "off");
+    localStorage.setItem("banana-sound", state.sound ? "on" : "off");
+    localStorage.setItem("banana-theme", state.theme);
+    localStorage.setItem("banana-volume", String(state.volume));
+  }
+  function updateTray() {
+    $("#quick-btn").innerHTML = `${state.wifi ? "◉" : "○"} <span>${state.sound && state.volume ? "♫" : "♩"}</span>`;
+    $$(".quick-tile").forEach(tile => {
+      const toggle = tile.dataset.toggle;
+      tile.classList.toggle("on", toggle === "wifi" ? state.wifi : toggle === "sound" ? state.sound : toggle === "theme" ? state.theme === "light" : false);
+      if (toggle === "wifi") $(".qt-label", tile).innerHTML = `Wi-Fi · <b>${state.wifi ? "On" : "Off"}</b>`;
+      if (toggle === "sound") $(".qt-label", tile).innerHTML = `Sounds · <b>${state.sound ? "On" : "Off"}</b>`;
+      if (toggle === "theme") $(".qt-label", tile).textContent = state.theme === "dark" ? "Light theme" : "Dark theme";
+    });
+  }
+  function applyTheme() { document.body.classList.toggle("light", state.theme === "light"); updateTray(); }
+  function toggleTheme() { state.theme = state.theme === "dark" ? "light" : "dark"; saveSettings(); applyTheme(); }
+  function buildStartMenu() {
+    const grid = $("#start-grid");
+    grid.innerHTML = apps.filter(app => state.installed.has(app.id)).map(app => `<button class="start-app" data-app="${app.id}"><i>${app.icon}</i><span>${escapeHTML(app.name)}</span></button>`).join("");
+  }
+  function focusWindow(id) {
+    const win = state.windows.get(id); if (!win) return;
+    state.windows.forEach(item => { item.element.classList.remove("active"); item.task.classList.remove("active"); });
+    win.element.classList.remove("minimized"); win.element.classList.add("active"); win.task.classList.add("active");
+    win.element.style.zIndex = String(++state.z); state.active = id;
+  }
+  function syncTasks() {
+    const area = $("#task-apps"); area.replaceChildren();
+    state.windows.forEach(win => {
+      const task = document.createElement("button"); task.type = "button"; task.className = "task-app" + (win.element.classList.contains("active") ? " active" : "");
+      task.title = win.title; task.innerHTML = `<span>${win.icon}</span><span class="task-name">${escapeHTML(win.title)}</span>`;
+      task.addEventListener("click", () => { if (win.element.classList.contains("active")) minimizeWindow(win.id); else focusWindow(win.id); beep(); });
+      win.task = task; area.append(task);
+    });
+  }
+  function minimizeWindow(id) {
+    const win = state.windows.get(id); if (!win) return;
+    win.element.classList.add("minimized"); win.element.classList.remove("active"); win.task.classList.remove("active");
+    if (state.active === id) { state.active = null; const next = [...state.windows.values()].find(item => !item.element.classList.contains("minimized")); if (next) focusWindow(next.id); }
+  }
+  function closeWindow(id) {
+    const win = state.windows.get(id); if (!win) return;
+    win.element.style.opacity = "0"; win.element.style.transform = "scale(.98)";
+    setTimeout(() => { win.element.remove(); state.windows.delete(id); if (state.active === id) state.active = null; syncTasks(); const next = [...state.windows.values()].find(item => !item.element.classList.contains("minimized")); if (next && !state.active) focusWindow(next.id); }, 140);
+    beep();
+  }
+  function toggleMaximize(win) {
+    if (!win.maximized) {
+      win.bounds = { left:win.element.style.left, top:win.element.style.top, width:win.element.style.width, height:win.element.style.height };
+      win.element.classList.add("maximized"); win.maximized = true;
+    } else {
+      win.element.classList.remove("maximized"); Object.assign(win.element.style, win.bounds); win.maximized = false;
+    }
+    focusWindow(win.id);
+  }
+  function createWindow({id,title,icon="🍌",width=680,height=470,content}) {
+    if (state.windows.has(id)) { focusWindow(id); return state.windows.get(id); }
+    const win = document.createElement("section"); win.className = "os-window"; win.setAttribute("role","dialog"); win.setAttribute("aria-label",title);
+    const availableW = desktop.clientWidth, availableH = desktop.clientHeight;
+    const actualW = Math.min(width, Math.max(300, availableW - 20)), actualH = Math.min(height, Math.max(210, availableH - 20));
+    const cascade = (state.windows.size * 27) % 165;
+    win.style.width = `${actualW}px`; win.style.height = `${actualH}px`;
+    win.style.left = `${Math.max(8,Math.min(availableW - actualW - 8,Math.round((availableW - actualW)/2) + cascade - 50))}px`;
+    win.style.top = `${Math.max(8,Math.min(availableH - actualH - 8,Math.round((availableH - actualH)/2) + cascade - 25))}px`;
+    win.innerHTML = `<header class="window-header"><div class="window-title"><i class="emoji">${icon}</i><span>${escapeHTML(title)}</span></div><div class="window-controls"><button class="win-btn minimize-btn" aria-label="Minimize">—</button><button class="win-btn maximize-btn" aria-label="Maximize">□</button><button class="win-btn close-btn" aria-label="Close">×</button></div></header><div class="window-body"></div><div class="window-resize-handle" aria-label="Resize window"></div>`;
+    const body = $(".window-body",win); if (typeof content === "string") body.innerHTML = content; else body.append(content);
+    desktop.append(win);
+    const record = {id,title,icon,element:win,task:null,maximized:false,bounds:null}; state.windows.set(id,record);
+    $(".minimize-btn",win).addEventListener("click",event=>{event.stopPropagation();minimizeWindow(id);beep();});
+    $(".maximize-btn",win).addEventListener("click",event=>{event.stopPropagation();toggleMaximize(record);beep();});
+    $(".close-btn",win).addEventListener("click",event=>{event.stopPropagation();closeWindow(id);});
+    win.addEventListener("pointerdown",()=>focusWindow(id));
+    const header = $(".window-header",win);
+    header.addEventListener("dblclick",event=>{if (!event.target.closest(".window-controls")) toggleMaximize(record);});
+    header.addEventListener("pointerdown",event=>{
+      if (event.button !== 0 || event.target.closest(".window-controls") || record.maximized) return;
+      event.preventDefault(); focusWindow(id); const startX=event.clientX,startY=event.clientY,left=win.offsetLeft,top=win.offsetTop;
+      header.setPointerCapture(event.pointerId);
+      const move=moveEvent=>{win.style.left=`${Math.max(-win.offsetWidth+90,Math.min(desktop.clientWidth-90,left+moveEvent.clientX-startX))}px`;win.style.top=`${Math.max(0,Math.min(desktop.clientHeight-46,top+moveEvent.clientY-startY))}px`;};
+      header.addEventListener("pointermove",move);header.addEventListener("pointerup",()=>header.removeEventListener("pointermove",move),{once:true});
+    });
+    const handle=$(".window-resize-handle",win);
+    handle.addEventListener("pointerdown",event=>{
+      if(event.button!==0||record.maximized)return;event.preventDefault();event.stopPropagation();focusWindow(id);
+      const sx=event.clientX,sy=event.clientY,sw=win.offsetWidth,sh=win.offsetHeight;
+      handle.setPointerCapture(event.pointerId);
+      const move=moveEvent=>{win.style.width=`${Math.max(320,Math.min(desktop.clientWidth-win.offsetLeft,sw+moveEvent.clientX-sx))}px`;win.style.height=`${Math.max(220,Math.min(desktop.clientHeight-win.offsetTop,sh+moveEvent.clientY-sy))}px`;};
+      handle.addEventListener("pointermove",move);handle.addEventListener("pointerup",()=>handle.removeEventListener("pointermove",move),{once:true});
+    });
+    syncTasks(); focusWindow(id); return record;
+  }
+  function launch(id) {
+    startMenu.classList.add("hidden");quickPanel.classList.add("hidden");$("#start-btn").classList.remove("selected");$("#quick-btn").classList.remove("selected");buildStartMenu();
+    const makers={browser:openBrowser,virtualbox:openVirtualBox,assistant:openAssistant,terminal:openTerminal,settings:openSettings,store:openStore,files:openFiles,notes:openNotes,calculator:openCalculator};
+    if(!state.installed.has(id)){toast("That app isn’t installed yet. Find it in the App Store.");return;}
+    if(makers[id]) {beep(); makers[id]();}
+  }
 
-  <script type="module" src="js/os.js"></script>
+  function openAssistant() {
+    const container=document.createElement("div");container.className="app assistant";
+    container.innerHTML=`<div class="assistant-top"><div class="assistant-avatar">🍌</div><div><strong>Banana Mind</strong><small>Your executive assistant, with extra potassium</small></div><span class="online-dot">Ready to help</span></div><div class="chat-scroll" aria-live="polite"><div class="chat-message assistant">Good day. I’m Banana Mind, your personal guide to this little operating system. Ask me how something works, or just say hello. I promise to keep my peel on. 🍌</div></div><div class="suggestion-row"><button class="suggestion">How do I use this desktop?</button><button class="suggestion">What can VirtualBox do?</button><button class="suggestion">Give me a coding tip</button></div><form class="chat-compose"><input aria-label="Message Banana Mind" placeholder="Ask Banana Mind anything…" autocomplete="off"><button class="app-button primary" type="submit">Send ↑</button></form>`;
+    const scroll=$(".chat-scroll",container),form=$(".chat-compose",container),input=$("input",form);
+    function replyTo(message) {
+      const text=message.toLowerCase(); let answer;
+      if(/^(hi|hello|hey|good morning|good evening)\b/.test(text)) answer="Hello! I’m Banana Mind, at your service. What would you like to explore today? I can explain the desktop, share a coding tip, or help you get a virtual machine up and running. 🍌";
+      else if(/(desktop|start menu|taskbar|window|drag|resize|minimi|maximi|theme|wifi|volume|setting)/.test(text)) answer="A quick tour: open apps from the Start menu or double-click a desktop icon. Drag a window by its title bar; use the buttons at the top-right to minimize, maximize, or close it. Double-clicking the title bar maximizes, and the corner grip resizes. Quick Settings lives by the clock. You can change the theme in Settings.";
+      else if(/(virtualbox|dos|linux|boot|game)/.test(text)) answer="Open Banana VirtualBox, choose Retro DOS or Linux Lite, then press Boot. DOS understands `help`, `dir`, `cd`, `cat`, `cls`, `matrix`, and `game` (a tiny number-guessing game). Linux Lite is a clickable desktop simulation. Nothing is installed or run on your computer.";
+      else if(/(browser|google|youtube|wiki|wikipedia|proxy|internet|web)/.test(text)) answer="BananaBrowse has interactive, built-in mock versions of Google Search, YouTube, and Wikipedia. Switch between Banana Sites and Direct web in its toolbar. Direct sites can refuse to load inside a frame, so use the open-in-new-tab button for those. I don’t route traffic through third-party proxies.";
+      else if(/(code|coding|javascript|html|css|python|program)/.test(text)) answer="A small coding tip: make the simplest useful behavior work first, then improve it in focused steps. In JavaScript, `const` is a good default for bindings you won't reassign; use `let` when reassignment is needed. Want help with a particular snippet or concept?";
+      else if(/(banana|peel|joke|funny|humor)/.test(text)) answer="Why did the banana install an operating system? It wanted a more a-peeling interface. My colleagues say it’s a-peel-ing. I say it’s a feature. 🍌";
+      else if(/(file|save|notes|app store|install|calculator)/.test(text)) answer="My Files lets you create folders and text files, and Notes saves your writing in this browser. The App Store has a Notes app and a Calculator—no account or download needed. Your local app data stays in this browser’s storage.";
+      else answer="That’s a thoughtful question. I’m an offline, built-in assistant, so I can help with BananaOS controls, its simulated apps, and everyday coding tips—but I can’t look things up on the live internet or run real programs. Tell me a little more and I’ll do my best. 🍌";
+      const bubble=document.createElement("div");bubble.className="chat-message assistant";bubble.textContent=answer;scroll.append(bubble);scroll.scrollTop=scroll.scrollHeight;
+    }
+    form.addEventListener("submit",event=>{event.preventDefault();const value=input.value.trim();if(!value)return;const bubble=document.createElement("div");bubble.className="chat-message user";bubble.textContent=value;scroll.append(bubble);input.value="";scroll.scrollTop=scroll.scrollHeight;setTimeout(()=>replyTo(value),280);});
+    $$(".suggestion",container).forEach(button=>button.addEventListener("click",()=>{input.value=button.textContent;form.requestSubmit();}));
+    createWindow({id:"assistant",title:"Banana Mind",icon:"🧠",width:590,height:560,content:container});
+  }
+  function openTerminal() {
+    const container=document.createElement("div");container.className="app terminal";
+    container.innerHTML=`<div class="terminal-bar">BANANA TERMINAL &nbsp;·&nbsp; AI-enabled shell &nbsp;·&nbsp; type <b>help</b> to begin</div><div class="terminal-output" aria-live="polite"></div><form class="terminal-form"><span class="terminal-prompt">banana@desktop:~$</span><input class="terminal-input" aria-label="Terminal command" autocomplete="off" spellcheck="false"></form>`;
+    const output=$(".terminal-output",container),form=$(".terminal-form",container),input=$(".terminal-input",container);
+    output.textContent="BananaOS [Web Edition]\nA tiny command line, backed by Banana Mind. No commands run outside this page.\n\n";
+    const write=text=>{output.textContent+=text;output.scrollTop=output.scrollHeight;};
+    form.addEventListener("submit",event=>{event.preventDefault();const line=input.value.trim();if(!line)return;input.value="";write(`\n${$(".terminal-prompt",container).textContent} ${line}\n`);
+      const ask=line.match(/^(?:ask|ai)\s+(.+)/i);
+      if(ask){const text=ask[1],lower=text.toLowerCase();let answer;
+        if(/(desktop|window|taskbar|setting|theme)/.test(lower))answer="Open apps from Start or double-click a desktop icon. Drag a title bar to move a window, double-click it to maximize, or resize from its lower-right corner. Quick Settings is beside the clock.";
+        else if(/(virtualbox|dos|linux|boot)/.test(lower))answer="Open VirtualBox, choose Retro DOS or Linux Lite, and press Boot. DOS supports HELP, DIR, CD, CAT, CLS, MATRIX, and GAME.";
+        else if(/(code|coding|javascript|html|css)/.test(lower))answer="Friendly coding tip: use semantic HTML for meaning, CSS for presentation, and JavaScript for behavior. Keep functions small and check user input before using it. Share a specific question for a more focused tip.";
+        else if(/(banana|joke|funny)/.test(lower))answer="Why did the banana use a terminal? It wanted to get to the root of the bunch. 🍌";
+        else answer="I’m Banana Mind, an offline helper. I can explain BananaOS, its simulated apps, and share practical coding tips. Try `ask how do I open an app?`";
+        write(`Banana Mind: ${answer}\n`);
+      }else runTerminalCommand(line,output,write);
+    });
+    createWindow({id:"terminal",title:"AI Terminal",icon:"🧠",width:680,height:460,content:container});
+    setTimeout(()=>input.focus(),40);
+  }
+
+  function openBrowser() {
+    const container=document.createElement("div");container.className="app browser";
+    container.innerHTML=`<div class="browser-toolbar"><button class="app-button back" aria-label="Back" title="Back">←</button><button class="app-button forward" aria-label="Forward" title="Forward">→</button><button class="app-button reload" aria-label="Reload" title="Reload">↻</button><div class="address-wrap"><span class="address-icon">⌕</span><input class="browser-address" aria-label="Address or search" value="banana://google" autocomplete="off"></div><select class="browser-mode" aria-label="Browse mode"><option value="mock">Banana Sites</option><option value="direct">Direct web</option></select><button class="app-button go" title="Go to address">Go</button></div><p class="browser-note">Banana Sites are interactive local demos. Direct websites may block embedding; use ↗ to open them in a new tab.</p><div class="browser-view"></div>`;
+    const address=$(".browser-address",container),view=$(".browser-view",container),mode=$(".browser-mode",container);
+    const history=[];let historyIndex=-1;
+    function setHistory(url,replace=false){if(replace&&historyIndex>=0){history[historyIndex]=url;return;}history.splice(historyIndex+1);history.push(url);historyIndex=history.length-1;updateNav();}
+    function updateNav(){$(".back",container).disabled=historyIndex<=0;$(".forward",container).disabled=historyIndex>=history.length-1;}
+    function normalize(value){
+      let raw=value.trim();if(!raw)return "banana://google";
+      if(/^banana:\/\//i.test(raw))return raw;
+      if(!/^[a-z][a-z\d+.-]*:\/\//i.test(raw)){
+        if(raw.includes(".")&&!raw.includes(" "))raw="https://"+raw;
+        else return "banana://google?q="+encodeURIComponent(raw);
+      }
+      try{const parsed=new URL(raw);if(!["http:","https:"].includes(parsed.protocol)){toast("BananaBrowse only opens web links (HTTP or HTTPS).");return "banana://google";}return parsed.href;}catch{return "banana://google?q="+encodeURIComponent(raw);}
+    }
+    function navigate(raw,record=true) {
+      let url=normalize(raw);address.value=url;
+      if(record)setHistory(url);
+      let parsed=new URL(url);let host=parsed.hostname.toLowerCase();let query=parsed.searchParams.get("q")||parsed.searchParams.get("search_query")||parsed.searchParams.get("search")||"";
+      const mockMode=mode.value==="mock";
+      const internal=parsed.protocol==="banana:";
+      if(internal&&!mockMode){url=host==="youtube"?"https://www.youtube.com":host==="wikipedia"?"https://en.wikipedia.org":`https://www.google.com/search?q=${encodeURIComponent(query)}`;parsed=new URL(url);host=parsed.hostname.toLowerCase();}
+      if(mockMode&&(internal||["google.com","www.google.com","youtube.com","www.youtube.com","wikipedia.org","en.wikipedia.org"].includes(host))) {
+        if(host==="youtube"||host==="youtube.com"||host==="www.youtube.com"){renderYoutube(view,query,term=>{address.value=`banana://youtube?q=${encodeURIComponent(term)}`;navigate(address.value);});}
+        else if(host==="wikipedia"||host==="wikipedia.org"||host==="en.wikipedia.org"){renderWiki(view,query,term=>{address.value=`banana://wikipedia?q=${encodeURIComponent(term)}`;navigate(address.value);});}
+        else renderGoogle(view,query,term=>{const target=routeQuery(term);address.value=target;navigate(target);});
+        updateNav();return;
+      }
+      address.value=url;
+      renderExternal(view,url);
+      updateNav();
+    }
+    function routeQuery(query) {
+      const q=query.trim();if(!q)return "banana://google";
+      if(/^(youtube|video)\b/i.test(q))return `https://www.youtube.com/results?search_query=${encodeURIComponent(q.replace(/^(youtube|video)\s*/i,""))}`;
+      if(/^(wiki|wikipedia)\b/i.test(q))return `https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(q.replace(/^(wiki|wikipedia)\s*/i,""))}`;
+      return `banana://google?q=${encodeURIComponent(q)}`;
+    }
+    $(".go",container).addEventListener("click",()=>{navigate(address.value);beep();});
+    address.addEventListener("keydown",event=>{if(event.key==="Enter")navigate(address.value);});
+    mode.addEventListener("change",()=>navigate(address.value,false));
+    $(".back",container).addEventListener("click",()=>{if(historyIndex>0){historyIndex--;navigate(history[historyIndex],false);updateNav();}});
+    $(".forward",container).addEventListener("click",()=>{if(historyIndex<history.length-1){historyIndex++;navigate(history[historyIndex],false);updateNav();}});
+    $(".reload",container).addEventListener("click",()=>navigate(address.value,false));
+    setHistory("banana://google");navigate("banana://google",false);
+    createWindow({id:"browser",title:"BananaBrowse",icon:"🌐",width:940,height:640,content:container});
+  }
+  function renderGoogle(view,query,onSearch) {
+    view.innerHTML=`<div class="mock-page ${query?"":"mock-google"}"><div class="google-wordmark"><b>G</b><b>o</b><b>o</b><b>g</b><b>l</b><b>e</b></div><form class="mock-search-form"><input aria-label="Search the simulated web" placeholder="Search the web" value="${escapeHTML(query)}"><button type="submit">Search</button></form><div class="mock-hint">Try a few searches or visit a site directly</div>${query?`<div class="search-results"><p>Search results for <strong>${escapeHTML(query)}</strong> · Simulated results</p><div class="search-result"><a href="#">${escapeHTML(query)} — the friendly guide</a><p>A locally generated BananaBrowse result for “${escapeHTML(query)}”. This sample page works without an internet connection.</p></div><div class="search-result"><a href="#">${escapeHTML(query)} | Wikipedia</a><p>Explore a concise encyclopedia-style overview in BananaBrowse’s built-in demo.</p></div><div class="search-result"><a href="#">Videos about ${escapeHTML(query)}</a><p>Browse the local video collection with an interactive YouTube-inspired page.</p></div></div>`:""}</div>`;
+    $("form",view).addEventListener("submit",event=>{event.preventDefault();const term=$("input",view).value.trim();if(term)onSearch(term);});
+    $$(".search-result a",view).forEach((link,index)=>link.addEventListener("click",event=>{event.preventDefault();onSearch(`${index===2?"youtube":"wiki"} ${query}`);}));
+    if(!query)$("input",view).focus({preventScroll:true});
+  }
+  function renderYoutube(view,query,onSearch) {
+    const videos=[["🍌","BananaOS in 90 seconds","Banana Lab · 1.2M views"],["🌴","A very relaxing fruit documentary","Nature-ish · 842K views"],["💻","Making a desktop in one HTML file","The Web Kitchen · 92K views"],["🎹","Lo-fi beats for tiny computers","Soft Sounds · 3.4M views"],["🪴","Plants that thrive on your desk","Green Thumb · 251K views"],["✨","The future of friendly interfaces","Good Design · 101K views"]];
+    const matches=query?videos.filter(([,title,author])=>`${title} ${author}`.toLowerCase().includes(query.toLowerCase())):videos;
+    view.innerHTML=`<div class="mock-page youtube-page"><div class="youtube-top"><div class="youtube-logo"><span>▶</span>YouTube</div><form class="mock-search-form"><input class="youtube-search" aria-label="Search videos" placeholder="Search" value="${escapeHTML(query)}"><button type="submit">⌕</button></form></div>${query?`<p style="color:#666;font-size:12px">${matches.length?`${matches.length} local result${matches.length===1?"":"s"} for “${escapeHTML(query)}”`:`No local videos found for “${escapeHTML(query)}”. Try “banana”, “desktop”, or “plants”.`}</p>`:""}<div class="video-grid">${matches.map(([emoji,title,author])=>`<article class="video-card" tabindex="0"><div class="video-thumb">${emoji}</div><div class="video-meta"><strong>${escapeHTML(title)}</strong><small>${escapeHTML(author)}</small></div></article>`).join("")}</div></div>`;
+    $("form",view).addEventListener("submit",event=>{event.preventDefault();onSearch($(".youtube-search",view).value.trim());});
+    $$(".video-card",view).forEach(card=>{const open=()=>{const title=$("strong",card).textContent;const thumb=$(".video-thumb",card).textContent;view.innerHTML=`<div class="mock-page youtube-page"><button class="mock-chip video-back">← Back to videos</button><div style="max-width:720px;margin:24px auto"><div style="height:310px;display:grid;place-items:center;background:linear-gradient(135deg,#1d2119,#34392c);border-radius:14px;font-size:72px">${thumb}<button class="app-button play-video" aria-label="Play video" style="position:absolute">▶</button></div><h2>${escapeHTML(title)}</h2><p class="muted">A locally simulated video · Enjoy the show!</p></div></div>`;$(".video-back",view).addEventListener("click",()=>renderYoutube(view,query,onSearch));$(".play-video",view).addEventListener("click",event=>{event.currentTarget.textContent=event.currentTarget.textContent==="▶"?"Ⅱ":"▶";toast("This is a simulated video preview.");});};card.addEventListener("click",open);card.addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();open();}});});
+  }
+  function renderWiki(view,query,onSearch) {
+    const topic=query?query.replace(/^(wiki|wikipedia)\s*/i,"").replaceAll("_"," "):"BananaOS";
+    view.innerHTML=`<div class="mock-page"><article class="wiki-page"><form><input class="wiki-search" placeholder="Search Wikipedia" aria-label="Search the encyclopedia"><button class="mock-chip" type="submit">Search</button></form><header class="wiki-head"><h1>${escapeHTML(topic)}</h1><p>From BananaPedia, the freely simulated encyclopedia</p></header><p><b>${escapeHTML(topic)}</b> may refer to a topic of curiosity, a question waiting to be answered, or a particularly good snack. This locally hosted article is part of BananaBrowse’s interactive demo.</p><p>Welcome to a small, friendly encyclopedia simulation. For real-world references, choose <b>Direct web</b> in the browser toolbar or open an external site in a new tab.</p><h2>In this demo</h2><ul><li>BananaOS runs entirely in your browser.</li><li>The web pages on this screen are generated locally.</li><li>Search terms update the page without contacting a server.</li></ul></article></div>`;
+    $("form",view).addEventListener("submit",event=>{event.preventDefault();const term=$(".wiki-search",view).value.trim();if(term)onSearch(term);});
+  }
+  function renderExternal(view,url) {
+    let domain;try{domain=new URL(url).hostname;}catch{domain=url;}
+    view.replaceChildren();
+    const frame=document.createElement("iframe");frame.className="browser-frame";frame.title=`Direct web view: ${domain}`;frame.referrerPolicy="no-referrer";frame.sandbox="allow-forms allow-scripts allow-popups allow-popups-to-escape-sandbox";frame.src=url;
+    const notice=document.createElement("div");notice.className="browser-external";notice.innerHTML=`<span class="external-icon">🌍</span><h2>${escapeHTML(domain)}</h2><p>Some sites block embedded views. If this page doesn’t load, open it in a new tab.</p><button class="app-button primary open-tab">↗ Open in new tab</button><button class="dismiss-notice" aria-label="Dismiss browser notice">×</button>`;
+    view.append(frame,notice);
+    $(".open-tab",notice).addEventListener("click",()=>{const opened=window.open(url,"_blank");if(opened)opened.opener=null;else toast("Your browser blocked the new tab. Allow pop-ups to continue.");});
+    $(".dismiss-notice",notice).addEventListener("click",()=>notice.remove());
+  }
+
+  function openVirtualBox() {
+    const container=document.createElement("div");container.className="app vbox";
+    container.innerHTML=`<div class="vbox-toolbar"><label for="guest-os">Guest OS</label><select class="app-select guest-os" id="guest-os"><option value="dos">Retro DOS CLI</option><option value="linux">Linux Lite</option></select><button class="app-button primary boot-button">▶ Boot</button><button class="app-button shutdown-button" disabled>⏻ Shut down</button><span class="vbox-status">Powered off</span></div><div class="vbox-screen"><div class="vbox-splash"><b>Banana VirtualBox</b><p>Choose an operating system and boot your tiny virtual machine. Everything here is a safe browser simulation.</p></div></div>`;
+    const screen=$(".vbox-screen",container),status=$(".vbox-status",container),select=$(".guest-os",container);
+    let booted=false,cwd="C:\\BANANA";
+    function boot() {
+      booted=true;status.textContent=select.value==="dos"?"Running · Retro DOS":"Running · Linux Lite";$(".boot-button",container).disabled=true;$(".shutdown-button",container).disabled=false;beep("boot");
+      if(select.value==="linux"){screen.innerHTML=`<div class="linux"><div class="linux-bar">🍌 &nbsp; Banana Linux Lite <span class="linux-clock" style="float:right">Session ready</span></div><div class="linux-desktop"><button class="linux-shortcut" data-tool="files"><span>📁</span>File manager</button><button class="linux-shortcut" data-tool="terminal"><span>⌨️</span>Terminal</button><button class="linux-shortcut" data-tool="about"><span>ℹ️</span>About BananaOS</button></div></div>`;$$(".linux-shortcut",screen).forEach(button=>button.addEventListener("click",()=>{const label=button.dataset.tool;toast(label==="about"?"A tiny Linux-inspired desktop simulation.":`${label==="files"?"File manager":"Terminal"} is simulated in this guest desktop.`);}));}
+      else drawDOS();
+    }
+    function drawDOS() {
+      screen.innerHTML=`<div class="dos"><div class="dos-output"><span class="dos-welcome">Banana DOS [Version 6.🍌]\nCopyright (C) Banana Systems.\n\nA safe, simulated command prompt. Type HELP to get started.\n</span></div><form class="dos-form"><span class="dos-prompt">C:\\BANANA&gt;</span><input aria-label="DOS command" autocomplete="off" spellcheck="false"></form></div>`;
+      cwd="C:\\BANANA";const output=$(".dos-output",screen),form=$(".dos-form",screen),input=$("input",form),prompt=$(".dos-prompt",screen);
+      const write=text=>{output.textContent+=text;output.scrollTop=output.scrollHeight;};
+      form.addEventListener("submit",event=>{event.preventDefault();const line=input.value.trim(),[command,...args]=line.split(/\s+/),cmd=(command||"").toLowerCase();if(!line)return;write(`${prompt.textContent} ${line}\n`);input.value="";
+        if(guessing){const guess=Number(line);guessing.tries++;if(!Number.isInteger(guess)||guess<1||guess>10)write("Pick a whole number from 1 to 10!\n");else if(guess===guessing.answer){write(`🍌 Correct! You got it in ${guessing.tries} ${guessing.tries===1?"guess":"guesses"}. Type GAME to play again.\n`);guessing=null;}else write(`${guess<guessing.answer?"Higher":"Lower"}! Try again.\n`);output.scrollTop=output.scrollHeight;return;}
+        if(cmd==="help")write("Commands: HELP, DIR, CD, CAT <file>, CLS, MATRIX, GAME, EXIT\nThe game is a tiny number guessing challenge. Nothing runs outside this window.\n");
+        else if(cmd==="dir")write(" Volume in drive C is BANANA\n Directory of "+cwd+"\n\n <DIR>          DOCUMENTS\n WELCOME.TXT\n\n               2 File(s)\n");
+        else if(cmd==="cd"){if(!args[0]||args[0]==="\\"){cwd="C:\\BANANA";}else if(args[0]===".."){cwd=cwd.slice(0,cwd.lastIndexOf("\\"))||"C:";}else cwd+=`\\${args.join(" ").toUpperCase()}`;prompt.textContent=`${cwd}>`;}
+        else if(cmd==="cat"){const name=args.join(" ").replace(/^.*[\\/]/,"");if(!name)write("Usage: CAT <file>\n");else if(state.files[name])write(state.files[name]+"\n");else if(name.toLowerCase()==="readme.txt")write("Welcome to the BananaOS virtual machine!\n");else write(`File not found: ${name}\n`);}
+        else if(cmd==="cls")output.textContent="";
+        else if(cmd==="matrix")write(Array.from({length:6},()=>Array.from({length:8},()=>Math.random()<.5?"0":"1").join(" ")).join("\n")+"\nMATRIX MODE: simulated. No actual screen hacking, just pixels. 🍌\n");
+        else if(cmd==="game"){guessing={answer:Math.floor(Math.random()*10)+1,tries:0};write("🍌 GUESS THE BANANA! I’m thinking of a number from 1 to 10.\nType your guess at the prompt.\n");}
+        else if(cmd==="exit"||cmd==="shutdown"){shutdown();}
+        else write(cmd?`'${command}' is not recognized. Type HELP for commands.\n`:"");
+        output.scrollTop=output.scrollHeight;
+      });
+      input.focus();
+    }
+    let guessing=null;
+    function shutdown(){booted=false;guessing=null;screen.innerHTML=`<div class="vbox-splash"><b>Machine powered off</b><p>Select an operating system and press Boot whenever you’re ready.</p></div>`;status.textContent="Powered off";$(".boot-button",container).disabled=false;$(".shutdown-button",container).disabled=true;}
+    $(".boot-button",container).addEventListener("click",boot);
+    $(".shutdown-button",container).addEventListener("click",shutdown);
+    select.addEventListener("change",()=>{if(booted)shutdown();});
+    createWindow({id:"virtualbox",title:"Banana VirtualBox",icon:"📦",width:760,height:520,content:container});
+  }
+  function openSettings() {
+    const container=document.createElement("div");container.className="app settings";
+    container.innerHTML=`<h2>Settings</h2><p class="settings-intro">A few little switches to make this desktop yours.</p><div class="setting-row"><div class="setting-icon">◉</div><div class="setting-copy"><strong>Wi-Fi</strong><small>Toggle the simulated network indicator.</small></div><button class="switch wifi-switch" role="switch" aria-label="Wi-Fi"></button></div><div class="setting-row"><div class="setting-icon">◐</div><div class="setting-copy"><strong>Appearance</strong><small>Switch between the night and daylight desktop themes.</small></div><button class="app-button theme-button">Toggle theme</button></div><div class="setting-row"><div class="setting-icon">♫</div><div class="setting-copy"><strong>Interface sounds</strong><small>Soft synthesized sounds for clicks and app launches.</small></div><button class="switch sound-switch" role="switch" aria-label="Interface sounds"></button></div><div class="setting-row"><div class="setting-icon">🔊</div><div class="setting-copy"><strong>Volume</strong><small>Set the level for synthesized interface sounds.</small></div><input class="settings-volume" type="range" min="0" max="100" aria-label="Volume"></div><div class="setting-row"><div class="setting-icon">🍌</div><div class="setting-copy"><strong>About BananaOS</strong><small>A self-contained browser desktop. No server, account, or downloads required.</small></div><span class="muted">Web Edition</span></div>`;
+    const wifi=$(".wifi-switch",container),sound=$(".sound-switch",container),volume=$(".settings-volume",container);
+    const sync=()=>{wifi.classList.toggle("on",state.wifi);wifi.setAttribute("aria-checked",String(state.wifi));sound.classList.toggle("on",state.sound);sound.setAttribute("aria-checked",String(state.sound));volume.value=String(state.volume);};
+    wifi.addEventListener("click",()=>{state.wifi=!state.wifi;saveSettings();updateTray();sync();});
+    sound.addEventListener("click",()=>{state.sound=!state.sound;saveSettings();updateTray();sync();});
+    $(".theme-button",container).addEventListener("click",()=>{toggleTheme();});
+    volume.addEventListener("input",()=>{state.volume=Number(volume.value);saveSettings();$("#volume-slider").value=String(state.volume);$("#volume-value").textContent=`${state.volume}%`;});
+    sync();createWindow({id:"settings",title:"Settings",icon:"⚙️",width:600,height:490,content:container});
+  }
+  function openStore() {
+    const container=document.createElement("div");container.className="app store";
+    container.innerHTML=`<div class="store-hero"><h2>Good things, freshly picked. 🍌</h2><p>Little apps that run right here in your browser—no downloads required.</p></div><div class="store-grid"></div>`;
+    const grid=$(".store-grid",container);
+    function render(){grid.innerHTML=apps.filter(app=>!["browser","virtualbox","assistant","terminal","settings","store","files"].includes(app.id)).map(app=>`<article class="store-card"><div class="store-card-head"><i>${app.icon}</i><strong>${escapeHTML(app.name)}</strong></div><p>${escapeHTML(app.description)}</p><button class="app-button ${state.installed.has(app.id)?"":"primary"}" data-install="${app.id}">${state.installed.has(app.id)?"Open app":"Install"}</button></article>`).join("");$$("[data-install]",grid).forEach(button=>button.addEventListener("click",()=>{const id=button.dataset.install;if(state.installed.has(id)){launch(id);return;}state.installed.add(id);localStorage.setItem("banana-installed",JSON.stringify([...state.installed]));buildStartMenu();render();toast(`${apps.find(app=>app.id===id).name} added to your apps.`);beep("boot");}));}
+    render();createWindow({id:"store",title:"App Store",icon:"🛍️",width:760,height:540,content:container});
+  }
+  function openNotes() {
+    const container=document.createElement("div");container.className="app notes";
+    container.innerHTML=`<input class="note-title" aria-label="Note title" value="My note"><textarea class="note-body" aria-label="Note contents" placeholder="Start writing…"></textarea>`;
+    $(".note-body",container).value=state.files["my-note.txt"]||"";
+    $(".note-title",container).addEventListener("input",()=>{state.files["my-note-title.txt"]=$(".note-title",container).value;localStorage.setItem("banana-files",JSON.stringify(state.files));});
+    $(".note-title",container).value=state.files["my-note-title.txt"]||"My note";
+    $(".note-body",container).addEventListener("input",()=>{state.files["my-note.txt"]=$(".note-body",container).value;localStorage.setItem("banana-files",JSON.stringify(state.files));});
+    createWindow({id:"notes",title:"Notes",icon:"📝",width:560,height:430,content:container});
+  }
+  function openCalculator() {
+    const container=document.createElement("div");container.className="app";container.style.cssText="max-width:360px;margin:0 auto;padding:18px";
+    container.innerHTML=`<input class="app-input calc-display" aria-label="Calculator display" value="0" readonly style="width:100%;text-align:right;font-size:25px;margin-bottom:12px"><div class="calc-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:7px"></div>`;
+    const grid=$(".calc-grid",container);let expression="";
+    function evaluate(source) {
+      if(source.length>64)throw new Error("Expression too long");
+      const tokens=source.match(/(?:\d+\.?\d*|\.\d+|[()+\-*/])/g)||[];
+      if(tokens.join("")!==source.replace(/\s/g,"")||tokens.length>64)throw new Error("Invalid expression");
+      let index=0;
+      function primary(){const token=tokens[index++];if(token==="+")return primary();if(token==="-")return-primary();if(token==="("){const value=additive();if(tokens[index++]!==")")throw new Error("Missing parenthesis");return value;}if(!token||!/^(\d+\.?\d*|\.\d+)$/.test(token))throw new Error("Expected a number");return Number(token);}
+      function multiplicative(){let value=primary();while(tokens[index]==="*"||tokens[index]==="/"){const operator=tokens[index++],right=primary();value=operator==="*"?value*right:value/right;}return value;}
+      function additive(){let value=multiplicative();while(tokens[index]==="+"||tokens[index]==="-"){const operator=tokens[index++],right=multiplicative();value=operator==="+"?value+right:value-right;}return value;}
+      const result=additive();if(index!==tokens.length||!Number.isFinite(result))throw new Error("Invalid result");return result;
+    }
+    ["C","(",")","÷","7","8","9","×","4","5","6","−","1","2","3","+","±","0",".","="].forEach(key=>{const button=document.createElement("button");button.className="app-button";button.textContent=key;button.style.cssText="height:45px;font-size:15px";grid.append(button);button.addEventListener("click",()=>{
+      const display=$(".calc-display",container);
+      if(key==="C"){expression="";display.value="0";return;}
+      if(key==="±"){if(expression.startsWith("-"))expression=expression.slice(1);else expression="-"+expression;display.value=expression||"0";return;}
+      if(key==="="){try{const result=evaluate(expression);expression=String(Number(result.toFixed(10)));display.value=expression;}catch{display.value="Check expression";expression="";}return;}
+      expression+=({"÷":"/","×":"*","−":"-"}[key]||key);display.value=expression;
+    });});
+    createWindow({id:"calculator",title:"Calculator",icon:"🧮",width:360,height:430,content:container});
+  }
+  function openFiles() {
+    const container=document.createElement("div");container.className="app files-app";
+    container.innerHTML=`<div class="files-toolbar"><span class="files-path">📁 &nbsp;/home/banana</span><button class="app-button new-file">＋ New text file</button></div><div class="files-grid"></div>`;
+    const grid=$(".files-grid",container);
+    function render(){grid.innerHTML=Object.keys(state.files).map(name=>`<button class="file-item" data-file="${escapeHTML(name)}"><span>${name.endsWith(".txt")?"📄":"📁"}</span><small>${escapeHTML(name)}</small></button>`).join("");$$("[data-file]",grid).forEach(button=>button.addEventListener("dblclick",()=>openTextFile(button.dataset.file)));}
+    $(".new-file",container).addEventListener("click",()=>{let name=prompt("Name your text file:","new-file.txt");if(name===null)return;name=name.trim();if(!name){toast("Please enter a filename.");return;}if(state.files[name]!==undefined){toast("A file with that name already exists.");return;}state.files[name]="";localStorage.setItem("banana-files",JSON.stringify(state.files));render();});
+    render();createWindow({id:"files",title:"My Files",icon:"📁",width:600,height:430,content:container});
+  }
+  function openTextFile(name) {
+    const container=document.createElement("div");container.className="app notes";container.innerHTML=`<input class="file-name app-input" aria-label="Filename"><textarea class="file-content" aria-label="File contents"></textarea>`;
+    $(".file-name",container).value=name;$(".file-content",container).value=state.files[name]||"";
+    $(".file-content",container).addEventListener("input",()=>{state.files[name]=$(".file-content",container).value;localStorage.setItem("banana-files",JSON.stringify(state.files));});
+    createWindow({id:`file-${name}`,title:name,icon:"📄",width:540,height:420,content:container});
+  }
+
+  function runTerminalCommand(line,output,write) {
+    const [cmd,...args]=line.trim().split(/\s+/),name=args[0];
+    if(cmd==="help")write("Available commands: help, about, apps, date, echo, clear, open <app>\n");
+    else if(cmd==="about")write("BananaOS Web Edition · a friendly desktop simulation that runs entirely in your browser.\n");
+    else if(cmd==="apps")write(apps.filter(app=>state.installed.has(app.id)).map(app=>app.name).join(" · ")+"\n");
+    else if(cmd==="date")write(new Date().toString()+"\n");
+    else if(cmd==="echo")write(args.join(" ")+"\n");
+    else if(cmd==="clear")output.textContent="";
+    else if(cmd==="open"){const app=apps.find(item=>item.id===name||item.name.toLowerCase()===args.join(" ").toLowerCase());if(app&&state.installed.has(app.id)){launch(app.id);write(`Opening ${app.name}…\n`);}else write(`App not found: ${args.join(" ")}\n`);}
+    else if(line.trim())write(`Command not found: ${cmd}. Type HELP for available commands.\n`);
+  }
+
+  function renderStartSearch() {
+    const query=$("#start-search").value.trim().toLowerCase();
+    $$(".start-app",$("#start-grid")).forEach(button=>{button.classList.toggle("hidden",!button.textContent.toLowerCase().includes(query));});
+  }
+  $("#start-btn").addEventListener("click",()=>{const open=startMenu.classList.toggle("hidden");quickPanel.classList.add("hidden");$("#start-btn").classList.toggle("selected",open);$("#start-btn").setAttribute("aria-expanded",String(open));if(open){buildStartMenu();$("#start-search").value="";renderStartSearch();}});
+  $("#start-search").addEventListener("input",renderStartSearch);
+  $("#start-grid").addEventListener("click",event=>{const button=event.target.closest("[data-app]");if(button)launch(button.dataset.app);});
+  $("#quick-btn").addEventListener("click",()=>{const open=quickPanel.classList.toggle("hidden");startMenu.classList.add("hidden");$("#start-btn").classList.remove("selected");$("#quick-btn").classList.toggle("selected",open);$("#quick-btn").setAttribute("aria-expanded",String(open));});
+  $(".quick-grid").addEventListener("click",event=>{const tile=event.target.closest("[data-toggle]");if(!tile)return;switch(tile.dataset.toggle){case"wifi":state.wifi=!state.wifi;saveSettings();updateTray();break;case"sound":state.sound=!state.sound;saveSettings();updateTray();break;case"theme":toggleTheme();break;case"assistant":launch("assistant");break;}beep();});
+  $("#volume-slider").value=String(state.volume);$("#volume-value").textContent=`${state.volume}%`;
+  $("#volume-slider").addEventListener("input",event=>{state.volume=Number(event.target.value);$("#volume-value").textContent=`${state.volume}%`;saveSettings();});
+  $("#restart-btn").addEventListener("click",()=>{[...state.windows.keys()].forEach(id=>{const win=state.windows.get(id);win.element.remove();state.windows.delete(id);});state.active=null;syncTasks();startMenu.classList.add("hidden");toast("Desktop restarted. All your files are safe.");launch("assistant");});
+  $("#desktop").addEventListener("click",event=>{const icon=event.target.closest(".desktop-icon");if(icon&&icon.dataset.app!=="")return;startMenu.classList.add("hidden");quickPanel.classList.add("hidden");});
+  $$(".desktop-icon").forEach(icon=>{
+    let startX=0,startY=0,baseX=0,baseY=0,moved=false;
+    icon.addEventListener("pointerdown",event=>{if(event.button!==0)return;startX=event.clientX;startY=event.clientY;baseX=Number(icon.dataset.dragX||0);baseY=Number(icon.dataset.dragY||0);moved=false;icon.setPointerCapture(event.pointerId);});
+    icon.addEventListener("pointermove",event=>{if(!icon.hasPointerCapture(event.pointerId))return;const dx=event.clientX-startX,dy=event.clientY-startY;if(Math.abs(dx)+Math.abs(dy)>4)moved=true;if(moved){icon.dataset.dragX=String(baseX+dx);icon.dataset.dragY=String(baseY+dy);icon.style.transform=`translate(${icon.dataset.dragX}px,${icon.dataset.dragY}px)`;}});
+    icon.addEventListener("pointerup",event=>{if(icon.hasPointerCapture(event.pointerId))icon.releasePointerCapture(event.pointerId);});
+    icon.addEventListener("dblclick",()=>launch(icon.dataset.app));icon.addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();launch(icon.dataset.app);}});
+  });
+  document.addEventListener("pointerdown",event=>{if(!startMenu.contains(event.target)&&!$("#start-btn").contains(event.target)){startMenu.classList.add("hidden");$("#start-btn").classList.remove("selected");}if(!quickPanel.contains(event.target)&&!$("#quick-btn").contains(event.target)){quickPanel.classList.add("hidden");$("#quick-btn").classList.remove("selected");}});
+  document.addEventListener("keydown",event=>{if(event.key==="Escape"){startMenu.classList.add("hidden");quickPanel.classList.add("hidden");}});
+  function updateClock(){const now=new Date();$("#clock-time").textContent=now.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});$("#clock-date").textContent=now.toLocaleDateString([],{weekday:"short",month:"short",day:"numeric"});}
+  updateClock();setInterval(updateClock,15000);applyTheme();buildStartMenu();updateTray();
+  setTimeout(()=>{toast("Welcome to BananaOS. Double-click an app to get started!");},500);
+})();
+</script>
 </body>
 </html>
