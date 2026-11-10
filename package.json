@@ -2,10 +2,10 @@
   "name": "banana-os",
   "version": "1.0.0",
   "description": "Banana OS - Web Operating System",
-  "main": "server/server.js",
+  "main": "Server.js",
   "type": "module",
   "scripts": {
-    "start": "node server/server.js"
+    "start": "node Server.js"
   },
   "dependencies": {
     "express": "^4.19.2",
