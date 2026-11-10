@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="png/logo.png"/>
+    <title>UBG Ultra - All Games</title>
+    <meta name="title" content="UBG Ultra - 700+ Unblocked Games">
+    <meta name="description" content="Play 700+ unblocked games including FNAF, Minecraft, Roblox, Slope, and more. Fast, free, no downloads.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ubg-ultra.github.io/">
+    <meta property="og:title" content="UBG Ultra - All Games">
+    <meta property="og:description" content="Play 700+ unblocked games. Fast, free, no downloads.">
+    <meta property="og:image" content="https://ubg-ultra.github.io/png/logo.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="UBG Ultra - All Games">
+    <meta name="twitter:description" content="Play 700+ unblocked games. Fast, free, no downloads.">
+    <meta name="twitter:image" content="https://ubg-ultra.github.io/png/logo.png">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/unified-games.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body class="dark-mode">
+    <div id="loading-screen">
+        <div class="loader-container">
+            <img id="logo" src="png/logo.png" alt="UBG Ultra">
+            <div id="loading-bar-container">
+                <div id="loading-bar"></div>
+            </div>
+            <p id="loading-text" style="margin-top: 15px; color: #aaa; font-size: 0.9rem;">Loading games...</p>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <div class="navbar-left">
+            <a href="/" class="logo-link">
+                <img src="png/logo.png" alt="UBG Ultra" class="logo-img">
+                <span class="logo-text">UBG Ultra</span>
+            </a>
+            <div class="nav-divider"></div>
+            <a href="/" class="nav-link">Home</a>
+            <a href="games.html" class="nav-link active">Games</a>
+            <a href="a.html" class="nav-link">Apps</a>
+            <a href="t.html" class="nav-link">Tools</a>
+        </div>
+        <div class="navbar-center">
+            <div class="search-wrapper">
+                <input type="text" id="searchInput" class="search-bar" placeholder="Search 700+ games..." autocomplete="off">
+                <div id="autocomplete" class="autocomplete-list"></div>
+            </div>
+        </div>
+        <div class="navbar-right">
+            <button id="category-toggle" class="category-btn" aria-label="Filter by category">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+                <span id="category-btn-text">All Categories</span>
+                <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M6 9l6 6 6-6"/>
+                </svg>
+            </button>
+            <div id="category-dropdown" class="category-dropdown">
+                <div class="category-search">
+                    <input type="text" id="category-search" placeholder="Filter categories...">
+                </div>
+                <div id="category-list" class="category-list"></div>
+            </div>
+            <a href="https://discord.gg/vVqY36mzvj" target="_blank" class="discord-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.873-.608 1.248a20.9 20.9 0 0 1-5.613 0 13.23 13.23 0 0 0-.617-1.249.077.077 0 0 0-.079-.037 19.736 19.736 0 0 0-4.885 1.515.069.069 0 0 0-.031.022C.533 9.046-.32 13.58.099 18.057a.083.083 0 0 0 .031.055 19.9 19.9 0 0 0 5.992 4.778.078.078 0 0 0 .084-.028c.464-.528.917-1.173 1.295-1.714a19.42 19.42 0 0 0 3.384 0c.382.547.838 1.197 1.305 1.722a.077.077 0 0 0 .084.028 19.839 19.839 0 0 0 6.005-4.778.077.077 0 0 0 .032-.054c.382-4.137-.332-8.584-1.715-11.635a.061.061 0 0 0-.031-.023zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+                </svg>
+            </a>
+            <button id="settings-btn" class="settings-btn" aria-label="Settings">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">All Games</h1>
+            <p class="page-subtitle" id="game-count">Loading...</p>
+        </div>
+
+        <div class="toolbar">
+            <div class="toolbar-left">
+                <select id="sort-select" class="sort-select">
+                    <option value="name-asc">Name (A-Z)</option>
+                    <option value="name-desc">Name (Z-A)</option>
+                    <option value="category">Category</option>
+                </select>
+                <div class="view-toggle">
+                    <button class="view-btn active" data-view="grid" aria-label="Grid view">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7" rx="1"/>
+                            <rect x="14" y="3" width="7" height="7" rx="1"/>
+                            <rect x="3" y="14" width="7" height="7" rx="1"/>
+                            <rect x="14" y="14" width="7" height="7" rx="1"/>
+                        </svg>
+                    </button>
+                    <button class="view-btn" data-view="list" aria-label="List view">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="3" y1="6" x2="21" y2="6"/>
+                            <line x1="3" y1="12" x2="21" y2="12"/>
+                            <line x1="3" y1="18" x2="21" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="toolbar-right">
+                <span class="results-count" id="results-count">0 games</span>
+            </div>
+        </div>
+
+        <div id="category-filter-bar" class="category-filter-bar"></div>
+
+        <div class="game-grid" id="gameGrid" role="list"></div>
+
+        <div id="empty-state" class="empty-state" style="display: none;">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <h2>No games found</h2>
+            <p>Try adjusting your search or filters</p>
+            <button id="clear-filters" class="clear-filters-btn">Clear all filters</button>
+        </div>
+    </main>
+
+    <div id="game-modal" class="game-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-game-info">
+                    <img id="modal-thumbnail" src="" alt="" class="modal-thumbnail">
+                    <div>
+                        <h2 id="modal-title" class="modal-title"></h2>
+                        <div id="modal-categories" class="modal-categories"></div>
+                    </div>
+                </div>
+                <button class="modal-close" aria-label="Close">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="modal-description" class="modal-description"></p>
+                <div class="modal-actions">
+                    <a id="modal-play-btn" href="#" class="btn btn-primary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <polygon points="5 3 19 12 5 21 5 3"/>
+                        </svg>
+                        Play Now
+                    </a>
+                    <button id="modal-fullscreen-btn" class="btn btn-secondary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+                        </svg>
+                        Fullscreen
+                    </button>
+                    <button id="modal-newtab-btn" class="btn btn-secondary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/>
+                            <line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg>
+                        New Tab
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <a href="/" class="footer-logo">
+                <img src="png/logo.png" alt="UBG Ultra">
+            </a>
+            <div class="footer-links">
+                <a href="https://discord.gg/vVqY36mzvj" target="_blank">Discord</a>
+                <a href="#" onclick="showDMCA(); return false;">DMCA</a>
+                <a href="#" onclick="showContact(); return false;">Contact</a>
+                <a href="#" onclick="showPrivacy(); return false;">Privacy</a>
+            </div>
+            <p class="footer-copyright">UBG Ultra &copy; 2025 - Unblocked Games for Everyone</p>
+        </div>
+    </footer>
+
+    <div id="popup-overlay" class="popup-overlay">
+        <div class="popup">
+            <div class="popup-header">
+                <h3 id="popup-title">Title</h3>
+                <button class="popup-close" onclick="closePopup()">&times;</button>
+            </div>
+            <div id="popup-body" class="popup-body"></div>
+        </div>
+    </div>
+
+    <script src="js/cloak.js"></script>
+    <script src="js/panic.js"></script>
+    <script src="js/mobile.js"></script>
+    <script type="module" src="js/unified-games.js"></script>
+</body>
+</html>

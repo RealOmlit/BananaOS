@@ -6,6 +6,8 @@
 <meta name="theme-color" content="#11120e">
 <meta name="description" content="BananaOS — a playful, fully interactive operating system for your browser.">
 <title>BananaOS — a little more a-peeling</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='.9em' font-size='56'%3E%F0%9F%8D%8C%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="./apps/apps.css">
 <style>
 :root{color-scheme:dark;--yellow:#f9d94c;--yellow2:#ffe98a;--ink:#12130e;--muted:#a9aa99;--glass:rgba(25,27,21,.84);--line:rgba(255,255,255,.1);--green:#a6ce70;--taskbar:rgba(18,19,15,.78);--wall:#151810;--shadow:0 24px 80px #0008,0 3px 14px #0004;--accent:var(--yellow)}
 *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden}body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--wall);color:#f5f3e8;font-size:13px}button,input,textarea,select{font:inherit}button{color:inherit}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--yellow);outline-offset:2px}button{cursor:pointer}::selection{background:#f9d94c55}
@@ -15,7 +17,7 @@
 .wallpaper-orbit:before,.wallpaper-orbit:after{content:"";position:absolute;border:1px solid #e8d78614;border-radius:50%;inset:12%}.wallpaper-orbit:after{inset:25%;background:radial-gradient(circle,#d1be4930 0,transparent 68%);border-color:#e8d78618}
 .wallpaper-wordmark{position:absolute;right:9%;bottom:9%;font-size:clamp(34px,7vw,88px);line-height:.9;letter-spacing:-.08em;font-weight:750;color:#f8eebc10;pointer-events:none}
 .wallpaper-wordmark small{display:block;text-align:right;font-size:10px;letter-spacing:.28em;color:#e3d89135;margin-top:16px}
-.desktop-icons{position:absolute;z-index:1;top:24px;left:22px;display:grid;grid-template-columns:repeat(1,82px);grid-auto-rows:94px;gap:4px}
+.desktop-icons{position:absolute;z-index:1;top:24px;left:22px;display:grid;grid-auto-flow:column;grid-template-rows:repeat(6,94px);grid-auto-columns:82px;gap:4px}
 .desktop-icon{width:80px;height:88px;padding:8px 4px;border:1px solid transparent;border-radius:12px;background:transparent;color:#fff;text-align:center;text-shadow:0 2px 6px #000b;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;touch-action:none;transition:background .16s,border-color .16s}
 .desktop-icon:hover,.desktop-icon:focus-visible{background:#ffffff12;border-color:#ffffff20}
 .icon-tile{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:23px;background:linear-gradient(145deg,#ffffff22,#ffffff08);border:1px solid #ffffff24;box-shadow:0 8px 20px #0003;text-shadow:none}
@@ -44,30 +46,58 @@
 .toast{position:fixed;z-index:20000;bottom:74px;left:50%;transform:translateX(-50%);padding:11px 16px;border:1px solid #ffffff20;border-radius:12px;background:#25271ff2;box-shadow:var(--shadow);font-size:12px;animation:panel-in .18s ease-out}
 body.light{color-scheme:light;--glass:rgba(248,248,241,.9);--taskbar:rgba(245,245,237,.82);--line:rgba(20,20,10,.12);--wall:#d8d8c8;color:#222318}
 body.light #desktop{background:radial-gradient(ellipse at 68% 28%,#c2c88a 0,transparent 28%),radial-gradient(ellipse at 80% 75%,#b1c2a1 0,transparent 36%),linear-gradient(140deg,#d8d9bf,#c3cdb3 55%,#a7b6a1)}body.light .desktop-icon{color:#27291d;text-shadow:0 1px 3px #fff9}body.light .wallpaper-wordmark{color:#22231812}body.light .wallpaper-wordmark small{color:#22231835}body.light #taskbar{color:#28291e}body.light .task-btn,body.light .tray-btn{color:#3f4035}body.light .task-app{color:#505144}body.light .task-app.active{color:#625517;background:#dec34221;border-color:#a88b2555}body.light .panel{background:#f8f8f1f5;color:#28291f;border-color:#00000018}body.light .start-app,body.light .start-foot button{color:#34352c}body.light .quick-tile{color:#27281e;border-color:#00000017;background:#00000005}body.light .quick-tile.on{background:#dfc44330}body.light .quick-tile .qt-label{color:#505144}body.light .window-title{color:#292a21}body.light .os-window{border-color:#0000001c}body.light .win-btn{color:#46473d;background:#00000009}body.light .app-button{color:#33342a;background:#00000008;border-color:#00000018}body.light .app-input,body.light .app-select{color:#222;background:#fff;border-color:#00000022}body.light .settings .setting-copy strong{color:#303126}body.light .store-card,body.light .setting-icon{background:#00000006;border-color:#00000016}body.light .assistant{background:#e1d2650a}body.light .assistant-top strong{color:#2c2d22}body.light .chat-message{color:#303126;background:#00000008}body.light .chat-message.user{background:#dfc44336}body.light .chat-compose input{color:#222;background:#00000008;border-color:#00000020}body.light .suggestion{color:#414236;border-color:#00000022}
-@media(max-width:600px){#taskbar{height:54px;padding:0 7px;gap:4px}.desktop-icons{top:12px;left:9px;grid-template-columns:repeat(2,76px);grid-auto-rows:86px}.desktop-icon{width:72px;height:80px}.clock-button{min-width:66px;padding:0 5px}.clock-button span{font-size:9px}.task-btn{padding:0 9px}.start-btn span:last-child{display:none}.task-app{max-width:92px;padding:0 8px;font-size:10px}.task-app .task-name{overflow:hidden;text-overflow:ellipsis}.os-window:not(.maximized){left:8px!important;top:12px!important;width:calc(100% - 16px)!important;height:calc(100% - 24px)!important;min-width:0;min-height:0}.window-resize-handle{display:none}.browser-mode{max-width:91px;font-size:10px}.browser-toolbar{gap:4px;padding:6px}.browser-toolbar .app-button{padding:7px}.store,.settings{padding:16px}.mock-page{padding:22px 5%}}
+@media(max-width:600px){#taskbar{height:54px;padding:0 7px;gap:4px}.desktop-icons{top:12px;left:9px;grid-template-rows:repeat(5,86px);grid-auto-columns:76px}.desktop-icon{width:72px;height:80px}body[data-icon-size="compact"] .desktop-icons{grid-template-rows:repeat(5,70px)}body[data-icon-size="large"] .desktop-icons{grid-template-rows:repeat(5,100px)}.clock-button{min-width:66px;padding:0 5px}.clock-button span{font-size:9px}.task-btn{padding:0 9px}.start-btn span:last-child{display:none}.task-app{max-width:92px;padding:0 8px;font-size:10px}.task-app .task-name{overflow:hidden;text-overflow:ellipsis}.os-window:not(.maximized){left:8px!important;top:12px!important;width:calc(100% - 16px)!important;height:calc(100% - 24px)!important;min-width:0;min-height:0}.window-resize-handle{display:none}.browser-mode{max-width:91px;font-size:10px}.browser-toolbar{gap:4px;padding:6px}.browser-toolbar .app-button{padding:7px}.store,.settings{padding:16px}.mock-page{padding:22px 5%}}
 .os-window{transition:border-color .15s,box-shadow .15s,opacity .14s,transform .14s}
 .browser-external{position:absolute;z-index:2;inset:auto 8px 8px;height:auto;min-height:0;flex-direction:row;align-items:center;gap:12px;text-align:left;padding:11px 13px;border:1px solid #e3dfce;border-radius:12px;background:#fffefaed;box-shadow:0 3px 14px #0002}
 .browser-external .external-icon{margin:0;font-size:20px}.browser-external h2{margin:0;font-size:12px;white-space:nowrap}.browser-external p{flex:1;margin:0;font-size:10px}.browser-external .app-button{white-space:nowrap;padding:7px 9px;font-size:10px}.browser-external .dismiss-notice{border:0;background:transparent;color:#62635b;padding:5px}
 @media(max-width:600px){.browser-external{inset:auto 5px 5px;flex-wrap:wrap;gap:7px;padding:8px}.browser-external p{flex-basis:100%;order:2}.browser-external h2{flex:1}.browser-external .app-button{font-size:9px;padding:6px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+:root[data-accent="banana"]{--yellow:#f9d94c;--yellow2:#ffe98a;--accent-soft:#f9d94c18;--accent-border:#f9d94c45}
+:root[data-accent="mint"]{--yellow:#91d6aa;--yellow2:#c0f1cf;--accent-soft:#91d6aa18;--accent-border:#91d6aa55}
+:root[data-accent="sky"]{--yellow:#83c9ee;--yellow2:#b4e5ff;--accent-soft:#83c9ee18;--accent-border:#83c9ee55}
+:root[data-accent="orchid"]{--yellow:#d7a2ef;--yellow2:#edccfb;--accent-soft:#d7a2ef18;--accent-border:#d7a2ef55}
+.task-app.active{color:var(--yellow2);background:var(--accent-soft);border-color:var(--accent-border)}
+.os-window.active{border-color:var(--accent-border);box-shadow:0 26px 90px #0009,0 0 0 1px var(--accent-soft)}
+body[data-wallpaper="aurora"] #desktop{background:radial-gradient(ellipse at 68% 28%,#397c7366 0,transparent 32%),radial-gradient(ellipse at 25% 80%,#66568b77 0,transparent 42%),linear-gradient(145deg,#172633,#10151f 55%,#11121b)}
+body[data-wallpaper="sunset"] #desktop{background:radial-gradient(ellipse at 76% 18%,#e0aa6388 0,transparent 32%),radial-gradient(ellipse at 24% 84%,#bd667e66 0,transparent 42%),linear-gradient(145deg,#342128,#171b26 60%,#11151b)}
+body[data-wallpaper="ocean"] #desktop{background:radial-gradient(ellipse at 75% 18%,#59b8c866 0,transparent 32%),radial-gradient(ellipse at 18% 83%,#4263a877 0,transparent 43%),linear-gradient(145deg,#122a36,#13202a 58%,#111820)}
+body.light[data-wallpaper="aurora"] #desktop{background:radial-gradient(ellipse at 70% 22%,#b1d6c2 0,transparent 35%),linear-gradient(145deg,#d9e8e2,#c3cdd5 65%,#c9c4d7)}
+body.light[data-wallpaper="sunset"] #desktop{background:radial-gradient(ellipse at 75% 18%,#f1cb91 0,transparent 35%),linear-gradient(145deg,#f1e0cf,#dec8ce 60%,#d1d1dc)}
+body.light[data-wallpaper="ocean"] #desktop{background:radial-gradient(ellipse at 75% 18%,#9bd8da 0,transparent 35%),linear-gradient(145deg,#d0e7e5,#c6d9e2 65%,#c4cce1)}
+body[data-icon-size="compact"] .desktop-icons{grid-template-rows:repeat(6,76px)}
+body[data-icon-size="compact"] .desktop-icon{height:70px;gap:4px}
+body[data-icon-size="compact"] .icon-tile{width:36px;height:36px;font-size:19px;border-radius:11px}
+body[data-icon-size="large"] .desktop-icons{grid-template-rows:repeat(6,112px)}
+body[data-icon-size="large"] .desktop-icon{height:104px;gap:9px}
+body[data-icon-size="large"] .icon-tile{width:58px;height:58px;font-size:29px;border-radius:17px}
+#desktop-icons{touch-action:none}
+.boot-screen{position:fixed;inset:0;z-index:30000;display:grid;place-items:center;overflow:hidden;background:radial-gradient(ellipse at 50% 30%,#3b4127 0,transparent 42%),linear-gradient(145deg,#171a12,#10120e 70%);transition:opacity .55s ease,visibility .55s ease}
+.boot-screen.finished{opacity:0;visibility:hidden;pointer-events:none}
+.boot-card{width:min(390px,calc(100vw - 42px));text-align:center;animation:boot-float 3s ease-in-out infinite}
+@keyframes boot-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.boot-logo{width:76px;height:76px;margin:0 auto 20px;display:grid;place-items:center;border:1px solid #f9d94c55;border-radius:25px;background:linear-gradient(145deg,#f9d94c26,#f9d94c08);box-shadow:0 0 70px #f9d94c19;font-size:38px}
+.boot-title{font-size:28px;letter-spacing:-.055em;font-weight:720}.boot-subtitle{margin-top:7px;color:#a8aa98;font-size:11px;letter-spacing:.13em;text-transform:uppercase}
+.boot-track{height:4px;margin:32px 0 13px;overflow:hidden;border-radius:5px;background:#ffffff16}.boot-progress{width:100%;height:100%;transform:scaleX(0);transform-origin:left;background:linear-gradient(90deg,#d3ba3b,#fff0a0);transition:transform .35s ease}
+.boot-status{display:flex;justify-content:space-between;color:#a7a996;font-size:10px}.boot-caption{margin-top:22px;color:#747767;font-size:10px}
+.calendar{max-width:520px;margin:auto;padding:20px}.calendar-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}.calendar-head h2{margin:0;font-size:17px}.calendar-nav{display:flex;gap:6px}.calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px}.calendar-day-name{text-align:center;padding:7px 0;color:var(--muted);font-size:10px}.calendar-day{min-height:44px;border:1px solid transparent;border-radius:10px;background:#ffffff06;color:inherit}.calendar-day:hover{background:#ffffff12}.calendar-day.muted-day{opacity:.42}.calendar-day.today{border-color:var(--accent-border);color:var(--yellow2)}.calendar-day.selected{background:var(--accent-soft)}.calendar-selected{margin-top:14px;color:var(--muted);font-size:11px}
+.paint-app{height:100%;display:flex;flex-direction:column;gap:8px;padding:10px}.paint-toolbar{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.paint-toolbar input[type=color]{width:34px;height:32px;padding:2px;border:1px solid #ffffff24;border-radius:7px;background:#171812}.paint-toolbar input[type=range]{width:90px;accent-color:var(--yellow)}.paint-canvas-wrap{flex:1;min-height:100px;overflow:hidden;border:1px solid #ffffff18;border-radius:10px;background:#fff}.paint-canvas{display:block;width:100%;height:100%;touch-action:none;cursor:crosshair}
+.music-app{max-width:440px;margin:auto;padding:26px;text-align:center}.music-disc{width:150px;height:150px;margin:8px auto 20px;display:grid;place-items:center;border:1px solid #ffffff20;border-radius:50%;background:repeating-radial-gradient(circle,#26291d 0 3px,#191b15 4px 8px);box-shadow:0 18px 40px #0005;font-size:37px}.music-disc.playing{animation:disc-spin 4s linear infinite}@keyframes disc-spin{to{transform:rotate(360deg)}}.music-app h2{margin:0;font-size:18px}.music-app p{margin:6px 0 17px;color:var(--muted);font-size:11px}.music-controls{display:flex;justify-content:center;gap:9px}
+.custom-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:10px 0}.custom-swatch{height:31px;border:2px solid transparent;border-radius:9px}.custom-swatch.selected{border-color:#fff;box-shadow:0 0 0 2px #0005}.pin-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-top:8px}.pin-option{display:flex;align-items:center;gap:8px;padding:8px;border:1px solid #ffffff12;border-radius:9px;background:#ffffff05;color:#e8e6db;font-size:11px}.pin-option input{accent-color:var(--yellow)}
+@media(max-width:600px){.calendar{padding:12px}.calendar-day{min-height:36px}.custom-grid{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
-<main id="desktop" aria-label="BananaOS desktop">
+<div id="boot-screen" class="boot-screen" role="status" aria-live="polite">
+  <div class="boot-card"><div class="boot-logo">🍌</div><div class="boot-title">BananaOS</div><div class="boot-subtitle">A little more a-peeling</div><div class="boot-track"><div class="boot-progress"></div></div><div class="boot-status"><span id="boot-message">Waking up the banana brain…</span><span id="boot-percent">0%</span></div><div class="boot-caption">Your desktop will be ready in a moment</div></div>
+</div>
+<main id="desktop" aria-label="BananaOS desktop" inert>
   <div class="wallpaper-orbit" aria-hidden="true"></div><div class="wallpaper-wordmark" aria-hidden="true">bananaOS<small>A LITTLE MORE A-PEELING</small></div>
-  <div class="desktop-icons" aria-label="Desktop applications">
-    <button class="desktop-icon" data-app="browser" title="Double-click to open BananaBrowse"><span class="icon-tile">🌐</span><span class="icon-label">BananaBrowse</span></button>
-    <button class="desktop-icon" data-app="virtualbox" title="Double-click to open Banana VirtualBox"><span class="icon-tile">📦</span><span class="icon-label">VirtualBox</span></button>
-    <button class="desktop-icon" data-app="terminal" title="Double-click to open AI Terminal"><span class="icon-tile">🧠</span><span class="icon-label">AI Terminal</span></button>
-    <button class="desktop-icon" data-app="settings" title="Double-click to open Settings"><span class="icon-tile">⚙️</span><span class="icon-label">Settings</span></button>
-    <button class="desktop-icon" data-app="store" title="Double-click to open App Store"><span class="icon-tile">🛍️</span><span class="icon-label">App Store</span></button>
-    <button class="desktop-icon" data-app="files" title="Double-click to open Files"><span class="icon-tile">📁</span><span class="icon-label">My Files</span></button>
-  </div>
+  <div class="desktop-icons" id="desktop-icons" aria-label="Desktop applications"></div>
 </main>
 <div id="start-menu" class="panel hidden" role="dialog" aria-label="Start menu">
   <div class="start-head"><div class="start-logo">🍌</div><div><strong>BananaOS</strong><small>Your delightfully different desktop</small></div></div>
   <input id="start-search" class="start-search" type="search" placeholder="Search apps…" aria-label="Search apps">
-  <div class="start-section">Pinned apps</div><div id="start-grid" class="start-grid"></div>
+  <div id="start-grid" class="start-app-groups"></div>
   <div class="start-foot"><span>BananaOS · Web Edition</span><button id="restart-btn" type="button">↻ Restart desktop</button></div>
 </div>
 <div id="quick-panel" class="panel hidden" role="dialog" aria-label="Quick settings">
@@ -76,11 +106,11 @@ body.light #desktop{background:radial-gradient(ellipse at 68% 28%,#c2c88a 0,tran
     <button class="quick-tile" data-toggle="wifi"><span class="qt-icon">◉</span><span class="qt-label">Wi-Fi · <b>On</b></span></button>
     <button class="quick-tile" data-toggle="sound"><span class="qt-icon">♫</span><span class="qt-label">Sounds · <b>On</b></span></button>
     <button class="quick-tile" data-toggle="theme"><span class="qt-icon">◐</span><span class="qt-label">Light theme</span></button>
-    <button class="quick-tile" data-toggle="assistant"><span class="qt-icon">🧠</span><span class="qt-label">Banana Mind</span></button>
+    <button class="quick-tile" data-toggle="games"><span class="qt-icon">🎮</span><span class="qt-label">Game Center</span></button>
   </div>
   <label class="volume-row"><span>Volume</span><input id="volume-slider" type="range" min="0" max="100" value="35"><span id="volume-value">35%</span></label>
 </div>
-<footer id="taskbar">
+<footer id="taskbar" inert>
   <button id="start-btn" class="task-btn start-btn" aria-label="Open Start menu" aria-expanded="false"><span class="start-mark">🍌</span><span>Start</span></button>
   <div id="task-apps" aria-label="Open applications"></div>
   <div class="tray">
@@ -89,33 +119,32 @@ body.light #desktop{background:radial-gradient(ellipse at 68% 28%,#c2c88a 0,tran
   </div>
 </footer>
 <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
-<script>
+<script type="module">
+import { appCatalog, appGroups, gameCenter } from "./apps/catalog.js";
+import { launchToolApp } from "./apps/toolkit.js";
+import { launchGameCenter } from "./apps/game-center.js";
 (() => {
   "use strict";
   const $ = (s, root = document) => root.querySelector(s);
   const $$ = (s, root = document) => [...root.querySelectorAll(s)];
   const escapeHTML = value => String(value).replace(/[&<>"']/g, char => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[char]));
-  const apps = [
-    { id:"browser", name:"BananaBrowse", icon:"🌐", description:"A little window to the web." },
-    { id:"virtualbox", name:"Banana VirtualBox", icon:"📦", description:"Boot a tiny DOS or Linux desktop." },
-    { id:"assistant", name:"Banana Mind", icon:"🧠", description:"Your helpful, banana-brained copilot." },
-    { id:"terminal", name:"AI Terminal", icon:"⌨️", description:"A friendly command line with Banana Mind built in." },
-    { id:"settings", name:"Settings", icon:"⚙️", description:"Make your desktop feel like yours." },
-    { id:"store", name:"App Store", icon:"🛍️", description:"Discover more desktop goodies." },
-    { id:"files", name:"My Files", icon:"📁", description:"Browse your little local filesystem." },
-    { id:"notes", name:"Notes", icon:"📝", description:"A tidy place for your thoughts." },
-    { id:"calculator", name:"Calculator", icon:"🧮", description:"Quick, sensible arithmetic." }
-  ];
+  const apps = [...appCatalog, gameCenter];
+  const defaultDesktopApps = ["browser","terminal","files","notes","calculator","game-center"];
   const state = {
     windows:new Map(), active:null, z:20, audio:null,
     wifi:localStorage.getItem("banana-wifi") !== "off",
     sound:localStorage.getItem("banana-sound") !== "off",
     theme:localStorage.getItem("banana-theme") || "dark",
     volume:Number(localStorage.getItem("banana-volume") ?? 35),
-    installed:new Set(JSON.parse(localStorage.getItem("banana-installed") || '["browser","virtualbox","assistant","terminal","settings","store","files"]')),
-    files:JSON.parse(localStorage.getItem("banana-files") || '{"welcome.txt":"Welcome to BananaOS!\\n\\nA tiny, friendly computer in your browser.\\n\\nTry Banana Mind, boot a virtual machine, or browse the little web."}')
+    installed:new Set([...apps.map(app=>app.id),...JSON.parse(localStorage.getItem("banana-installed") || "[]")]),
+    desktopApps:JSON.parse(localStorage.getItem("banana-desktop-apps") || JSON.stringify(defaultDesktopApps)),
+    desktopPositions:JSON.parse(localStorage.getItem("banana-desktop-positions") || "{}"),
+    wallpaper:localStorage.getItem("banana-wallpaper") || "banana",
+    accent:localStorage.getItem("banana-accent") || "banana",
+    iconSize:localStorage.getItem("banana-icon-size") || "medium",
+    files:JSON.parse(localStorage.getItem("banana-files") || '{"welcome.txt":"Welcome to BananaOS!\\n\\nYour 50 browser-based apps run locally in this tab. Open Game Center to browse the bundled UBG catalog."}')
   };
-  const desktop = $("#desktop"), startMenu = $("#start-menu"), quickPanel = $("#quick-panel");
+  const desktop = $("#desktop"), desktopIcons = $("#desktop-icons"), startMenu = $("#start-menu"), quickPanel = $("#quick-panel");
   let toastTimer;
   function toast(message) {
     const el = $("#toast"); el.textContent = message; el.classList.remove("hidden");
@@ -138,6 +167,11 @@ body.light #desktop{background:radial-gradient(ellipse at 68% 28%,#c2c88a 0,tran
     localStorage.setItem("banana-sound", state.sound ? "on" : "off");
     localStorage.setItem("banana-theme", state.theme);
     localStorage.setItem("banana-volume", String(state.volume));
+    localStorage.setItem("banana-wallpaper",state.wallpaper);
+    localStorage.setItem("banana-accent",state.accent);
+    localStorage.setItem("banana-icon-size",state.iconSize);
+    localStorage.setItem("banana-desktop-apps",JSON.stringify(state.desktopApps));
+    localStorage.setItem("banana-desktop-positions",JSON.stringify(state.desktopPositions));
   }
   function updateTray() {
     $("#quick-btn").innerHTML = `${state.wifi ? "◉" : "○"} <span>${state.sound && state.volume ? "♫" : "♩"}</span>`;
@@ -149,11 +183,31 @@ body.light #desktop{background:radial-gradient(ellipse at 68% 28%,#c2c88a 0,tran
       if (toggle === "theme") $(".qt-label", tile).textContent = state.theme === "dark" ? "Light theme" : "Dark theme";
     });
   }
-  function applyTheme() { document.body.classList.toggle("light", state.theme === "light"); updateTray(); }
+  function applyPersonalization() {
+    const wallpapers=["banana","aurora","sunset","ocean"],accents=["banana","mint","sky","orchid"],sizes=["compact","medium","large"];
+    if(!wallpapers.includes(state.wallpaper))state.wallpaper="banana";
+    if(!accents.includes(state.accent))state.accent="banana";
+    if(!sizes.includes(state.iconSize))state.iconSize="medium";
+    document.body.dataset.wallpaper=state.wallpaper;
+    document.body.dataset.iconSize=state.iconSize;
+    document.documentElement.dataset.accent=state.accent;
+    renderDesktopIcons();
+  }
+  function applyTheme() { document.body.classList.toggle("light", state.theme === "light"); applyPersonalization(); updateTray(); }
   function toggleTheme() { state.theme = state.theme === "dark" ? "light" : "dark"; saveSettings(); applyTheme(); }
   function buildStartMenu() {
     const grid = $("#start-grid");
-    grid.innerHTML = apps.filter(app => state.installed.has(app.id)).map(app => `<button class="start-app" data-app="${app.id}"><i>${app.icon}</i><span>${escapeHTML(app.name)}</span></button>`).join("");
+    const categories=[...appGroups,"Games"];
+    grid.innerHTML=categories.map(category=>`<section class="start-group"><h2 class="start-section">${escapeHTML(category)}</h2><div class="start-grid">${apps.filter(app=>app.category===category&&state.installed.has(app.id)).map(app=>`<button class="start-app" data-app="${app.id}"><i>${app.icon}</i><span>${escapeHTML(app.name)}</span></button>`).join("")}</div></section>`).join("");
+  }
+  function renderDesktopIcons() {
+    state.desktopApps=state.desktopApps.filter(id=>state.installed.has(id)&&apps.some(app=>app.id===id));
+    desktopIcons.innerHTML=apps.filter(app=>state.desktopApps.includes(app.id)).map(app=>{
+      const position=state.desktopPositions[app.id]||{};
+      const x=Number.isFinite(position.x)?Math.max(-1200,Math.min(1200,position.x)):0;
+      const y=Number.isFinite(position.y)?Math.max(-1200,Math.min(1200,position.y)):0;
+      return `<button class="desktop-icon" data-app="${app.id}" title="Double-click to open ${escapeHTML(app.name)}" style="transform:translate(${x}px,${y}px)" data-x="${x}" data-y="${y}"><span class="icon-tile">${app.icon}</span><span class="icon-label">${escapeHTML(app.name)}</span></button>`;
+    }).join("");
   }
   function focusWindow(id) {
     const win = state.windows.get(id); if (!win) return;
@@ -177,6 +231,7 @@ body.light #desktop{background:radial-gradient(ellipse at 68% 28%,#c2c88a 0,tran
   }
   function closeWindow(id) {
     const win = state.windows.get(id); if (!win) return;
+    if (win.onClose) win.onClose();
     win.element.style.opacity = "0"; win.element.style.transform = "scale(.98)";
     setTimeout(() => { win.element.remove(); state.windows.delete(id); if (state.active === id) state.active = null; syncTasks(); const next = [...state.windows.values()].find(item => !item.element.classList.contains("minimized")); if (next && !state.active) focusWindow(next.id); }, 140);
     beep();
@@ -190,7 +245,7 @@ body.light #desktop{background:radial-gradient(ellipse at 68% 28%,#c2c88a 0,tran
     }
     focusWindow(win.id);
   }
-  function createWindow({id,title,icon="🍌",width=680,height=470,content}) {
+  function createWindow({id,title,icon="🍌",width=680,height=470,content,onClose=null}) {
     if (state.windows.has(id)) { focusWindow(id); return state.windows.get(id); }
     const win = document.createElement("section"); win.className = "os-window"; win.setAttribute("role","dialog"); win.setAttribute("aria-label",title);
     const availableW = desktop.clientWidth, availableH = desktop.clientHeight;
@@ -202,7 +257,7 @@ body.light #desktop{background:radial-gradient(ellipse at 68% 28%,#c2c88a 0,tran
     win.innerHTML = `<header class="window-header"><div class="window-title"><i class="emoji">${icon}</i><span>${escapeHTML(title)}</span></div><div class="window-controls"><button class="win-btn minimize-btn" aria-label="Minimize">—</button><button class="win-btn maximize-btn" aria-label="Maximize">□</button><button class="win-btn close-btn" aria-label="Close">×</button></div></header><div class="window-body"></div><div class="window-resize-handle" aria-label="Resize window"></div>`;
     const body = $(".window-body",win); if (typeof content === "string") body.innerHTML = content; else body.append(content);
     desktop.append(win);
-    const record = {id,title,icon,element:win,task:null,maximized:false,bounds:null}; state.windows.set(id,record);
+    const record = {id,title,icon,element:win,task:null,maximized:false,bounds:null,onClose}; state.windows.set(id,record);
     $(".minimize-btn",win).addEventListener("click",event=>{event.stopPropagation();minimizeWindow(id);beep();});
     $(".maximize-btn",win).addEventListener("click",event=>{event.stopPropagation();toggleMaximize(record);beep();});
     $(".close-btn",win).addEventListener("click",event=>{event.stopPropagation();closeWindow(id);});
@@ -228,9 +283,15 @@ body.light #desktop{background:radial-gradient(ellipse at 68% 28%,#c2c88a 0,tran
   }
   function launch(id) {
     startMenu.classList.add("hidden");quickPanel.classList.add("hidden");$("#start-btn").classList.remove("selected");$("#quick-btn").classList.remove("selected");buildStartMenu();
-    const makers={browser:openBrowser,virtualbox:openVirtualBox,assistant:openAssistant,terminal:openTerminal,settings:openSettings,store:openStore,files:openFiles,notes:openNotes,calculator:openCalculator};
+    const makers={browser:openBrowser,terminal:openTerminal,settings:openSettings,files:openFiles,notes:openNotes,calculator:openCalculator,calendar:openCalendar,paint:openPaint};
     if(!state.installed.has(id)){toast("That app isn’t installed yet. Find it in the App Store.");return;}
-    if(makers[id]) {beep(); makers[id]();}
+    const app=apps.find(item=>item.id===id);
+    if(!app)return;
+    const logs=JSON.parse(localStorage.getItem("banana-os-logs")||"[]");logs.push({time:new Date().toLocaleTimeString(),message:`Opened ${app.name}`});localStorage.setItem("banana-os-logs",JSON.stringify(logs.slice(-200)));
+    beep();
+    if(id===gameCenter.id)launchGameCenter({createWindow,toast});
+    else if(makers[id])makers[id]();
+    else launchToolApp(app,{createWindow,state,toast});
   }
 
   function openAssistant() {
@@ -275,52 +336,9 @@ body.light #desktop{background:radial-gradient(ellipse at 68% 28%,#c2c88a 0,tran
   }
 
   function openBrowser() {
-    const container=document.createElement("div");container.className="app browser";
-    container.innerHTML=`<div class="browser-toolbar"><button class="app-button back" aria-label="Back" title="Back">←</button><button class="app-button forward" aria-label="Forward" title="Forward">→</button><button class="app-button reload" aria-label="Reload" title="Reload">↻</button><div class="address-wrap"><span class="address-icon">⌕</span><input class="browser-address" aria-label="Address or search" value="banana://google" autocomplete="off"></div><select class="browser-mode" aria-label="Browse mode"><option value="mock">Banana Sites</option><option value="direct">Direct web</option></select><button class="app-button go" title="Go to address">Go</button></div><p class="browser-note">Banana Sites are interactive local demos. Direct websites may block embedding; use ↗ to open them in a new tab.</p><div class="browser-view"></div>`;
-    const address=$(".browser-address",container),view=$(".browser-view",container),mode=$(".browser-mode",container);
-    const history=[];let historyIndex=-1;
-    function setHistory(url,replace=false){if(replace&&historyIndex>=0){history[historyIndex]=url;return;}history.splice(historyIndex+1);history.push(url);historyIndex=history.length-1;updateNav();}
-    function updateNav(){$(".back",container).disabled=historyIndex<=0;$(".forward",container).disabled=historyIndex>=history.length-1;}
-    function normalize(value){
-      let raw=value.trim();if(!raw)return "banana://google";
-      if(/^banana:\/\//i.test(raw))return raw;
-      if(!/^[a-z][a-z\d+.-]*:\/\//i.test(raw)){
-        if(raw.includes(".")&&!raw.includes(" "))raw="https://"+raw;
-        else return "banana://google?q="+encodeURIComponent(raw);
-      }
-      try{const parsed=new URL(raw);if(!["http:","https:"].includes(parsed.protocol)){toast("BananaBrowse only opens web links (HTTP or HTTPS).");return "banana://google";}return parsed.href;}catch{return "banana://google?q="+encodeURIComponent(raw);}
-    }
-    function navigate(raw,record=true) {
-      let url=normalize(raw);address.value=url;
-      if(record)setHistory(url);
-      let parsed=new URL(url);let host=parsed.hostname.toLowerCase();let query=parsed.searchParams.get("q")||parsed.searchParams.get("search_query")||parsed.searchParams.get("search")||"";
-      const mockMode=mode.value==="mock";
-      const internal=parsed.protocol==="banana:";
-      if(internal&&!mockMode){url=host==="youtube"?"https://www.youtube.com":host==="wikipedia"?"https://en.wikipedia.org":`https://www.google.com/search?q=${encodeURIComponent(query)}`;parsed=new URL(url);host=parsed.hostname.toLowerCase();}
-      if(mockMode&&(internal||["google.com","www.google.com","youtube.com","www.youtube.com","wikipedia.org","en.wikipedia.org"].includes(host))) {
-        if(host==="youtube"||host==="youtube.com"||host==="www.youtube.com"){renderYoutube(view,query,term=>{address.value=`banana://youtube?q=${encodeURIComponent(term)}`;navigate(address.value);});}
-        else if(host==="wikipedia"||host==="wikipedia.org"||host==="en.wikipedia.org"){renderWiki(view,query,term=>{address.value=`banana://wikipedia?q=${encodeURIComponent(term)}`;navigate(address.value);});}
-        else renderGoogle(view,query,term=>{const target=routeQuery(term);address.value=target;navigate(target);});
-        updateNav();return;
-      }
-      address.value=url;
-      renderExternal(view,url);
-      updateNav();
-    }
-    function routeQuery(query) {
-      const q=query.trim();if(!q)return "banana://google";
-      if(/^(youtube|video)\b/i.test(q))return `https://www.youtube.com/results?search_query=${encodeURIComponent(q.replace(/^(youtube|video)\s*/i,""))}`;
-      if(/^(wiki|wikipedia)\b/i.test(q))return `https://en.wikipedia.org/w/index.php?search=${encodeURIComponent(q.replace(/^(wiki|wikipedia)\s*/i,""))}`;
-      return `banana://google?q=${encodeURIComponent(q)}`;
-    }
-    $(".go",container).addEventListener("click",()=>{navigate(address.value);beep();});
-    address.addEventListener("keydown",event=>{if(event.key==="Enter")navigate(address.value);});
-    mode.addEventListener("change",()=>navigate(address.value,false));
-    $(".back",container).addEventListener("click",()=>{if(historyIndex>0){historyIndex--;navigate(history[historyIndex],false);updateNav();}});
-    $(".forward",container).addEventListener("click",()=>{if(historyIndex<history.length-1){historyIndex++;navigate(history[historyIndex],false);updateNav();}});
-    $(".reload",container).addEventListener("click",()=>navigate(address.value,false));
-    setHistory("banana://google");navigate("banana://google",false);
-    createWindow({id:"browser",title:"BananaBrowse",icon:"🌐",width:940,height:640,content:container});
+    const container=document.createElement("div");container.className="app gust-app";
+    container.innerHTML=`<p class="gust-host-note">Gust runs in an isolated frame. It uses its configured WISP relay for browsing; avoid entering sensitive credentials. Account-token integrations are disabled in this embedded view.</p><iframe class="gust-frame" title="Gust Browser" src="./Gust.html" sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-downloads allow-pointer-lock" allow="fullscreen; autoplay" referrerpolicy="no-referrer"></iframe>`;
+    createWindow({id:"browser",title:"Gust Browser",icon:"🌐",width:1120,height:760,content:container});
   }
   function renderGoogle(view,query,onSearch) {
     view.innerHTML=`<div class="mock-page ${query?"":"mock-google"}"><div class="google-wordmark"><b>G</b><b>o</b><b>o</b><b>g</b><b>l</b><b>e</b></div><form class="mock-search-form"><input aria-label="Search the simulated web" placeholder="Search the web" value="${escapeHTML(query)}"><button type="submit">Search</button></form><div class="mock-hint">Try a few searches or visit a site directly</div>${query?`<div class="search-results"><p>Search results for <strong>${escapeHTML(query)}</strong> · Simulated results</p><div class="search-result"><a href="#">${escapeHTML(query)} — the friendly guide</a><p>A locally generated BananaBrowse result for “${escapeHTML(query)}”. This sample page works without an internet connection.</p></div><div class="search-result"><a href="#">${escapeHTML(query)} | Wikipedia</a><p>Explore a concise encyclopedia-style overview in BananaBrowse’s built-in demo.</p></div><div class="search-result"><a href="#">Videos about ${escapeHTML(query)}</a><p>Browse the local video collection with an interactive YouTube-inspired page.</p></div></div>`:""}</div>`;
@@ -344,7 +362,7 @@ body.light #desktop{background:radial-gradient(ellipse at 68% 28%,#c2c88a 0,tran
     let domain;try{domain=new URL(url).hostname;}catch{domain=url;}
     view.replaceChildren();
     const frame=document.createElement("iframe");frame.className="browser-frame";frame.title=`Direct web view: ${domain}`;frame.referrerPolicy="no-referrer";frame.sandbox="allow-forms allow-scripts allow-popups allow-popups-to-escape-sandbox";frame.src=url;
-    const notice=document.createElement("div");notice.className="browser-external";notice.innerHTML=`<span class="external-icon">🌍</span><h2>${escapeHTML(domain)}</h2><p>Some sites block embedded views. If this page doesn’t load, open it in a new tab.</p><button class="app-button primary open-tab">↗ Open in new tab</button><button class="dismiss-notice" aria-label="Dismiss browser notice">×</button>`;
+    const notice=document.createElement("div");notice.className="browser-external";notice.innerHTML=`<span class="external-icon">🌍</span><h2>${escapeHTML(domain)}</h2><p>Site-level CORS and frame restrictions cannot be bypassed on static hosting. If embedding is refused, open the site in a new tab.</p><button class="app-button primary open-tab">↗ Open in new tab</button><button class="dismiss-notice" aria-label="Dismiss browser notice">×</button>`;
     view.append(frame,notice);
     $(".open-tab",notice).addEventListener("click",()=>{const opened=window.open(url,"_blank");if(opened)opened.opener=null;else toast("Your browser blocked the new tab. Allow pop-ups to continue.");});
     $(".dismiss-notice",notice).addEventListener("click",()=>notice.remove());
@@ -388,14 +406,35 @@ body.light #desktop{background:radial-gradient(ellipse at 68% 28%,#c2c88a 0,tran
   }
   function openSettings() {
     const container=document.createElement("div");container.className="app settings";
-    container.innerHTML=`<h2>Settings</h2><p class="settings-intro">A few little switches to make this desktop yours.</p><div class="setting-row"><div class="setting-icon">◉</div><div class="setting-copy"><strong>Wi-Fi</strong><small>Toggle the simulated network indicator.</small></div><button class="switch wifi-switch" role="switch" aria-label="Wi-Fi"></button></div><div class="setting-row"><div class="setting-icon">◐</div><div class="setting-copy"><strong>Appearance</strong><small>Switch between the night and daylight desktop themes.</small></div><button class="app-button theme-button">Toggle theme</button></div><div class="setting-row"><div class="setting-icon">♫</div><div class="setting-copy"><strong>Interface sounds</strong><small>Soft synthesized sounds for clicks and app launches.</small></div><button class="switch sound-switch" role="switch" aria-label="Interface sounds"></button></div><div class="setting-row"><div class="setting-icon">🔊</div><div class="setting-copy"><strong>Volume</strong><small>Set the level for synthesized interface sounds.</small></div><input class="settings-volume" type="range" min="0" max="100" aria-label="Volume"></div><div class="setting-row"><div class="setting-icon">🍌</div><div class="setting-copy"><strong>About BananaOS</strong><small>A self-contained browser desktop. No server, account, or downloads required.</small></div><span class="muted">Web Edition</span></div>`;
+    container.innerHTML=`<h2>Settings</h2><p class="settings-intro">Make this little desktop feel like yours.</p>
+      <div class="setting-row"><div class="setting-icon">◉</div><div class="setting-copy"><strong>Wi-Fi</strong><small>Toggle the simulated network indicator.</small></div><button class="switch wifi-switch" role="switch" aria-label="Wi-Fi"></button></div>
+      <div class="setting-row"><div class="setting-icon">◐</div><div class="setting-copy"><strong>Appearance</strong><small>Switch between the night and daylight themes.</small></div><button class="app-button theme-button">Toggle theme</button></div>
+      <div class="setting-row"><div class="setting-icon">♫</div><div class="setting-copy"><strong>Interface sounds</strong><small>Soft synthesized sounds for clicks and app launches.</small></div><button class="switch sound-switch" role="switch" aria-label="Interface sounds"></button></div>
+      <div class="setting-row"><div class="setting-icon">🔊</div><div class="setting-copy"><strong>Volume</strong><small>Set the level for synthesized interface sounds.</small></div><input class="settings-volume" type="range" min="0" max="100" aria-label="Volume"></div>
+      <div class="setting-row"><div class="setting-icon">🖼️</div><div class="setting-copy"><strong>Wallpaper</strong><small>Choose a calm little corner for your desktop.</small></div><select class="app-select wallpaper-select" aria-label="Wallpaper"><option value="banana">Banana Grove</option><option value="aurora">Aurora</option><option value="sunset">Soft Sunset</option><option value="ocean">Blue Hour</option></select></div>
+      <div class="setting-row"><div class="setting-icon">✳</div><div class="setting-copy"><strong>Accent color</strong><small>Change buttons, highlights, and focus rings.</small></div><span class="muted accent-name"></span></div>
+      <div class="custom-grid" role="group" aria-label="Accent color">
+        <button class="custom-swatch" data-accent="banana" aria-label="Banana gold" title="Banana gold" style="background:#f9d94c"></button><button class="custom-swatch" data-accent="mint" aria-label="Mint green" title="Mint green" style="background:#91d6aa"></button><button class="custom-swatch" data-accent="sky" aria-label="Sky blue" title="Sky blue" style="background:#83c9ee"></button><button class="custom-swatch" data-accent="orchid" aria-label="Soft orchid" title="Soft orchid" style="background:#d7a2ef"></button>
+      </div>
+      <div class="setting-row"><div class="setting-icon">🔎</div><div class="setting-copy"><strong>Desktop icon size</strong><small>Pick a comfortable shortcut size.</small></div><select class="app-select icon-size-select" aria-label="Desktop icon size"><option value="compact">Compact</option><option value="medium">Comfortable</option><option value="large">Large</option></select></div>
+      <div class="setting-row"><div class="setting-icon">📌</div><div class="setting-copy"><strong>Desktop shortcuts</strong><small>Choose which installed apps appear on your desktop. Drag shortcuts to arrange them.</small></div></div>
+      <div class="pin-list"></div>
+      <div class="setting-row"><div class="setting-icon">🍌</div><div class="setting-copy"><strong>About BananaOS</strong><small>A self-contained browser desktop. Your settings and files stay in this browser.</small></div><span class="muted">Web Edition</span></div>`;
     const wifi=$(".wifi-switch",container),sound=$(".sound-switch",container),volume=$(".settings-volume",container);
     const sync=()=>{wifi.classList.toggle("on",state.wifi);wifi.setAttribute("aria-checked",String(state.wifi));sound.classList.toggle("on",state.sound);sound.setAttribute("aria-checked",String(state.sound));volume.value=String(state.volume);};
     wifi.addEventListener("click",()=>{state.wifi=!state.wifi;saveSettings();updateTray();sync();});
     sound.addEventListener("click",()=>{state.sound=!state.sound;saveSettings();updateTray();sync();});
     $(".theme-button",container).addEventListener("click",()=>{toggleTheme();});
     volume.addEventListener("input",()=>{state.volume=Number(volume.value);saveSettings();$("#volume-slider").value=String(state.volume);$("#volume-value").textContent=`${state.volume}%`;});
-    sync();createWindow({id:"settings",title:"Settings",icon:"⚙️",width:600,height:490,content:container});
+    const wallpaper=$(".wallpaper-select",container),iconSize=$(".icon-size-select",container),pinList=$(".pin-list",container);
+    wallpaper.value=state.wallpaper;iconSize.value=state.iconSize;
+    wallpaper.addEventListener("change",()=>{state.wallpaper=wallpaper.value;saveSettings();applyPersonalization();});
+    iconSize.addEventListener("change",()=>{state.iconSize=iconSize.value;saveSettings();applyPersonalization();});
+    $$(".custom-swatch",container).forEach(swatch=>{swatch.classList.toggle("selected",swatch.dataset.accent===state.accent);swatch.addEventListener("click",()=>{state.accent=swatch.dataset.accent;$$(".custom-swatch",container).forEach(item=>item.classList.toggle("selected",item===swatch));$(".accent-name",container).textContent=swatch.title;saveSettings();applyPersonalization();});});
+    $(".accent-name",container).textContent=$(`.custom-swatch[data-accent="${state.accent}"]`,container)?.title||"Banana gold";
+    pinList.innerHTML=apps.filter(app=>state.installed.has(app.id)&&!["settings","store"].includes(app.id)).map(app=>`<label class="pin-option"><input type="checkbox" data-pin="${app.id}" ${state.desktopApps.includes(app.id)?"checked":""}><span>${app.icon} ${escapeHTML(app.name)}</span></label>`).join("");
+    pinList.addEventListener("change",event=>{const checkbox=event.target.closest("[data-pin]");if(!checkbox)return;if(checkbox.checked&&!state.desktopApps.includes(checkbox.dataset.pin))state.desktopApps.push(checkbox.dataset.pin);if(!checkbox.checked)state.desktopApps=state.desktopApps.filter(id=>id!==checkbox.dataset.pin);saveSettings();renderDesktopIcons();});
+    sync();createWindow({id:"settings",title:"Settings",icon:"⚙️",width:650,height:700,content:container});
   }
   function openStore() {
     const container=document.createElement("div");container.className="app store";
@@ -436,6 +475,80 @@ body.light #desktop{background:radial-gradient(ellipse at 68% 28%,#c2c88a 0,tran
     });});
     createWindow({id:"calculator",title:"Calculator",icon:"🧮",width:360,height:430,content:container});
   }
+  function openCalendar() {
+    const container=document.createElement("div");container.className="app calendar";
+    container.innerHTML=`<div class="calendar-head"><button class="app-button calendar-prev" aria-label="Previous month">←</button><h2 class="calendar-month"></h2><button class="app-button calendar-next" aria-label="Next month">→</button></div><div class="calendar-grid"></div><div class="calendar-selected"></div>`;
+    const grid=$(".calendar-grid",container),heading=$(".calendar-month",container),selected=$(".calendar-selected",container);
+    let month=new Date(),selectedDate=new Date();month.setDate(1);
+    function render(){
+      heading.textContent=month.toLocaleDateString([],{month:"long",year:"numeric"});
+      const firstDay=month.getDay(),daysInMonth=new Date(month.getFullYear(),month.getMonth()+1,0).getDate(),daysBefore=new Date(month.getFullYear(),month.getMonth(),0).getDate();
+      const today=new Date(),sameDay=(a,b)=>a.getDate()===b.getDate()&&a.getMonth()===b.getMonth()&&a.getFullYear()===b.getFullYear();
+      grid.innerHTML=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(day=>`<div class="calendar-day-name">${day}</div>`).join("");
+      for(let index=0;index<42;index++){
+        let day,offset=0;
+        if(index<firstDay){day=daysBefore-firstDay+index+1;offset=-1;}
+        else if(index>=firstDay+daysInMonth){day=index-firstDay-daysInMonth+1;offset=1;}
+        else day=index-firstDay+1;
+        const date=new Date(month.getFullYear(),month.getMonth()+offset,day),button=document.createElement("button");
+        button.className="calendar-day"+(offset?" muted-day":"")+(sameDay(date,today)?" today":"")+(sameDay(date,selectedDate)?" selected":"");
+        button.type="button";button.textContent=String(day);button.setAttribute("aria-label",date.toLocaleDateString([], {weekday:"long",month:"long",day:"numeric",year:"numeric"}));
+        button.addEventListener("click",()=>{selectedDate=date;month=new Date(date.getFullYear(),date.getMonth(),1);render();});
+        grid.append(button);
+      }
+      selected.textContent=`Selected: ${selectedDate.toLocaleDateString([],{weekday:"long",month:"long",day:"numeric",year:"numeric"})}`;
+    }
+    $(".calendar-prev",container).addEventListener("click",()=>{month.setMonth(month.getMonth()-1);render();});
+    $(".calendar-next",container).addEventListener("click",()=>{month.setMonth(month.getMonth()+1);render();});
+    render();createWindow({id:"calendar",title:"Calendar",icon:"🗓️",width:490,height:480,content:container});
+  }
+  function openPaint() {
+    const container=document.createElement("div");container.className="app paint-app";
+    container.innerHTML=`<div class="paint-toolbar"><label class="muted">Color <input class="paint-color" type="color" value="#3e633f" aria-label="Brush color"></label><label class="muted">Brush <input class="paint-size" type="range" min="1" max="40" value="7" aria-label="Brush size"></label><button class="app-button paint-clear">Clear</button><button class="app-button primary paint-save">Save PNG</button></div><div class="paint-canvas-wrap"><canvas class="paint-canvas" aria-label="Drawing canvas"></canvas></div>`;
+    const canvas=$(".paint-canvas",container),context=canvas.getContext("2d"),wrap=$(".paint-canvas-wrap",container);
+    function resizeCanvas(){
+      const rect=wrap.getBoundingClientRect();if(!rect.width||!rect.height)return;
+      const pixelRatio=Math.min(window.devicePixelRatio||1,2),previous=document.createElement("canvas");
+      previous.width=canvas.width;previous.height=canvas.height;
+      if(previous.width&&previous.height)previous.getContext("2d").drawImage(canvas,0,0);
+      canvas.width=Math.round(rect.width*pixelRatio);canvas.height=Math.round(rect.height*pixelRatio);
+      context.setTransform(pixelRatio,0,0,pixelRatio,0,0);context.fillStyle="#fff";context.fillRect(0,0,rect.width,rect.height);
+      if(previous.width&&previous.height)context.drawImage(previous,0,0,previous.width,previous.height,0,0,rect.width,rect.height);
+      context.lineCap="round";context.lineJoin="round";
+    }
+    let drawing=false;
+    canvas.addEventListener("pointerdown",event=>{drawing=true;canvas.setPointerCapture(event.pointerId);const rect=canvas.getBoundingClientRect();context.beginPath();context.moveTo(event.clientX-rect.left,event.clientY-rect.top);});
+    canvas.addEventListener("pointermove",event=>{if(!drawing)return;const rect=canvas.getBoundingClientRect();context.strokeStyle=$(".paint-color",container).value;context.lineWidth=Number($(".paint-size",container).value);context.lineTo(event.clientX-rect.left,event.clientY-rect.top);context.stroke();});
+    const stop=()=>{drawing=false;};canvas.addEventListener("pointerup",stop);canvas.addEventListener("pointercancel",stop);
+    $(".paint-clear",container).addEventListener("click",()=>{context.save();context.setTransform(1,0,0,1,0,0);context.fillStyle="#fff";context.fillRect(0,0,canvas.width,canvas.height);context.restore();});
+    $(".paint-save",container).addEventListener("click",()=>{const link=document.createElement("a");link.download="banana-paint.png";link.href=canvas.toDataURL("image/png");link.click();});
+    const observer=new ResizeObserver(resizeCanvas);observer.observe(wrap);
+    createWindow({id:"paint",title:"Banana Paint",icon:"🎨",width:720,height:540,content:container,onClose:()=>observer.disconnect()});
+    resizeCanvas();
+  }
+  function openMusic() {
+    const container=document.createElement("div");container.className="app music-app";
+    container.innerHTML=`<div class="music-disc">🍌</div><h2>Banana Radio</h2><p>A tiny synthesizer, playing locally in your browser.</p><div class="music-controls"><select class="app-select music-tune" aria-label="Choose a tune"><option value="sunshine">Pocket sunshine</option><option value="orbit">Little orbit</option><option value="grove">Grove at dusk</option></select><button class="app-button primary music-toggle">▶ Play</button></div>`;
+    const disc=$(".music-disc",container),button=$(".music-toggle",container),tune=$(".music-tune",container);
+    const tunes={sunshine:[523.25,659.25,783.99,659.25,587.33,698.46,880,698.46],orbit:[392,523.25,587.33,523.25,349.23,440,523.25,440],grove:[329.63,392,493.88,392,293.66,349.23,440,349.23]};
+    let playing=false,noteIndex=0,timer=null;
+    function stop(){playing=false;clearTimeout(timer);timer=null;disc.classList.remove("playing");button.textContent="▶ Play";}
+    function playNote(){
+      if(!playing)return;
+      try{
+        state.audio ||= new (window.AudioContext||window.webkitAudioContext)();
+        if(state.audio.state==="suspended")state.audio.resume();
+        const oscillator=state.audio.createOscillator(),gain=state.audio.createGain(),now=state.audio.currentTime;
+        oscillator.type="sine";oscillator.frequency.value=tunes[tune.value][noteIndex++%tunes[tune.value].length];
+        gain.gain.setValueAtTime(Math.min(.08,state.volume/900),now);gain.gain.exponentialRampToValueAtTime(.0001,now+.24);
+        oscillator.connect(gain);gain.connect(state.audio.destination);oscillator.start(now);oscillator.stop(now+.25);
+      }catch(error){stop();toast("Audio playback is unavailable in this browser.");console.warn("Music Box audio is unavailable.",error);return;}
+      timer=setTimeout(playNote,330);
+    }
+    button.addEventListener("click",()=>{if(playing){stop();return;}if(!state.sound||state.volume===0){toast("Turn on sound and raise the volume in Settings to listen.");return;}playing=true;disc.classList.add("playing");button.textContent="Ⅱ Pause";playNote();});
+    tune.addEventListener("change",()=>{noteIndex=0;});
+    createWindow({id:"music",title:"Music Box",icon:"🎵",width:500,height:420,content:container,onClose:stop});
+  }
   function openFiles() {
     const container=document.createElement("div");container.className="app files-app";
     container.innerHTML=`<div class="files-toolbar"><span class="files-path">📁 &nbsp;/home/banana</span><button class="app-button new-file">＋ New text file</button></div><div class="files-grid"></div>`;
@@ -471,23 +584,59 @@ body.light #desktop{background:radial-gradient(ellipse at 68% 28%,#c2c88a 0,tran
   $("#start-search").addEventListener("input",renderStartSearch);
   $("#start-grid").addEventListener("click",event=>{const button=event.target.closest("[data-app]");if(button)launch(button.dataset.app);});
   $("#quick-btn").addEventListener("click",()=>{const open=quickPanel.classList.toggle("hidden");startMenu.classList.add("hidden");$("#start-btn").classList.remove("selected");$("#quick-btn").classList.toggle("selected",open);$("#quick-btn").setAttribute("aria-expanded",String(open));});
-  $(".quick-grid").addEventListener("click",event=>{const tile=event.target.closest("[data-toggle]");if(!tile)return;switch(tile.dataset.toggle){case"wifi":state.wifi=!state.wifi;saveSettings();updateTray();break;case"sound":state.sound=!state.sound;saveSettings();updateTray();break;case"theme":toggleTheme();break;case"assistant":launch("assistant");break;}beep();});
+  $(".quick-grid").addEventListener("click",event=>{const tile=event.target.closest("[data-toggle]");if(!tile)return;switch(tile.dataset.toggle){case"wifi":state.wifi=!state.wifi;saveSettings();updateTray();break;case"sound":state.sound=!state.sound;saveSettings();updateTray();break;case"theme":toggleTheme();break;case"games":launch("game-center");break;}beep();});
   $("#volume-slider").value=String(state.volume);$("#volume-value").textContent=`${state.volume}%`;
   $("#volume-slider").addEventListener("input",event=>{state.volume=Number(event.target.value);$("#volume-value").textContent=`${state.volume}%`;saveSettings();});
-  $("#restart-btn").addEventListener("click",()=>{[...state.windows.keys()].forEach(id=>{const win=state.windows.get(id);win.element.remove();state.windows.delete(id);});state.active=null;syncTasks();startMenu.classList.add("hidden");toast("Desktop restarted. All your files are safe.");launch("assistant");});
+  $("#restart-btn").addEventListener("click",()=>window.location.reload());
   $("#desktop").addEventListener("click",event=>{const icon=event.target.closest(".desktop-icon");if(icon&&icon.dataset.app!=="")return;startMenu.classList.add("hidden");quickPanel.classList.add("hidden");});
-  $$(".desktop-icon").forEach(icon=>{
-    let startX=0,startY=0,baseX=0,baseY=0,moved=false;
-    icon.addEventListener("pointerdown",event=>{if(event.button!==0)return;startX=event.clientX;startY=event.clientY;baseX=Number(icon.dataset.dragX||0);baseY=Number(icon.dataset.dragY||0);moved=false;icon.setPointerCapture(event.pointerId);});
-    icon.addEventListener("pointermove",event=>{if(!icon.hasPointerCapture(event.pointerId))return;const dx=event.clientX-startX,dy=event.clientY-startY;if(Math.abs(dx)+Math.abs(dy)>4)moved=true;if(moved){icon.dataset.dragX=String(baseX+dx);icon.dataset.dragY=String(baseY+dy);icon.style.transform=`translate(${icon.dataset.dragX}px,${icon.dataset.dragY}px)`;}});
-    icon.addEventListener("pointerup",event=>{if(icon.hasPointerCapture(event.pointerId))icon.releasePointerCapture(event.pointerId);});
-    icon.addEventListener("dblclick",()=>launch(icon.dataset.app));icon.addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();launch(icon.dataset.app);}});
+  let iconDrag=null;
+  desktopIcons.addEventListener("pointerdown",event=>{
+    const icon=event.target.closest(".desktop-icon");
+    if(!icon||event.button!==0)return;
+    iconDrag={icon,id:icon.dataset.app,pointerId:event.pointerId,startX:event.clientX,startY:event.clientY,x:Number(icon.dataset.x||0),y:Number(icon.dataset.y||0),moved:false};
+    icon.setPointerCapture(event.pointerId);
   });
+  desktopIcons.addEventListener("pointermove",event=>{
+    if(!iconDrag||iconDrag.pointerId!==event.pointerId)return;
+    const {icon}=iconDrag,dx=event.clientX-iconDrag.startX,dy=event.clientY-iconDrag.startY;
+    if(Math.abs(dx)+Math.abs(dy)>4)iconDrag.moved=true;
+    if(!iconDrag.moved)return;
+    const minX=-icon.offsetLeft,maxX=desktop.clientWidth-icon.offsetLeft-icon.offsetWidth;
+    const minY=-icon.offsetTop,maxY=desktop.clientHeight-icon.offsetTop-icon.offsetHeight;
+    const x=Math.max(minX,Math.min(maxX,iconDrag.x+dx)),y=Math.max(minY,Math.min(maxY,iconDrag.y+dy));
+    icon.dataset.x=String(x);icon.dataset.y=String(y);icon.style.transform=`translate(${x}px,${y}px)`;
+  });
+  desktopIcons.addEventListener("pointerup",event=>{
+    if(!iconDrag||iconDrag.pointerId!==event.pointerId)return;
+    const {icon,id,moved}=iconDrag;
+    if(moved){state.desktopPositions[id]={x:Number(icon.dataset.x),y:Number(icon.dataset.y)};saveSettings();}
+    if(icon.hasPointerCapture(event.pointerId))icon.releasePointerCapture(event.pointerId);
+    iconDrag=null;
+  });
+  desktopIcons.addEventListener("pointercancel",()=>{iconDrag=null;});
+  desktopIcons.addEventListener("dblclick",event=>{const icon=event.target.closest(".desktop-icon");if(icon)launch(icon.dataset.app);});
+  desktopIcons.addEventListener("keydown",event=>{const icon=event.target.closest(".desktop-icon");if(icon&&(event.key==="Enter"||event.key===" ")){event.preventDefault();launch(icon.dataset.app);}});
   document.addEventListener("pointerdown",event=>{if(!startMenu.contains(event.target)&&!$("#start-btn").contains(event.target)){startMenu.classList.add("hidden");$("#start-btn").classList.remove("selected");}if(!quickPanel.contains(event.target)&&!$("#quick-btn").contains(event.target)){quickPanel.classList.add("hidden");$("#quick-btn").classList.remove("selected");}});
   document.addEventListener("keydown",event=>{if(event.key==="Escape"){startMenu.classList.add("hidden");quickPanel.classList.add("hidden");}});
   function updateClock(){const now=new Date();$("#clock-time").textContent=now.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});$("#clock-date").textContent=now.toLocaleDateString([],{weekday:"short",month:"short",day:"numeric"});}
   updateClock();setInterval(updateClock,15000);applyTheme();buildStartMenu();updateTray();
-  setTimeout(()=>{toast("Welcome to BananaOS. Double-click an app to get started!");},500);
+  async function runBootSequence(){
+    const stages=["Loading kernel…","Mounting virtual file system…","Loading 50 app modules…","Indexing the local game library…","Initializing Gust Browser…","Starting desktop services…"];
+    const progress=$(".boot-progress"),message=$("#boot-message"),percent=$("#boot-percent");
+    for(let index=0;index<stages.length;index++){
+      message.textContent=stages[index];
+      const value=Math.round((index+1)/stages.length*100);
+      progress.style.transform=`scaleX(${value/100})`;
+      percent.textContent=`${value}%`;
+      await new Promise(resolve=>setTimeout(resolve,1000));
+    }
+    await Promise.all([document.fonts?.ready||Promise.resolve(),new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))]);
+    message.textContent="Ready. Have a-peeling day!";
+    $("#desktop").removeAttribute("inert");$("#taskbar").removeAttribute("inert");beep("boot");
+    $("#boot-screen").classList.add("finished");
+    setTimeout(()=>{$("#boot-screen").remove();toast("Welcome to BananaOS. Double-click an app to get started!");},600);
+  }
+  runBootSequence();
 })();
 </script>
 </body>

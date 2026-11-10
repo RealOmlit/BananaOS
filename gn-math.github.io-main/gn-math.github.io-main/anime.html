@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+    <link rel="apple-touch-icon" href="/favicon.png">
+    <script>
+        window.addEventListener('beforeunload', function (event) {
+            event.preventDefault();
+            event.returnValue = '';
+            return 'Are you sure you want to leave? Any unsaved changes will be lost.';
+        });
+    </script>
+    <script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5521219086088837" crossorigin="anonymous"></script>
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-WX5VS54ZDW"></script>
+    <meta name="google-adsense-account" content="ca-pub-5521219086088837">
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'G-WX5VS54ZDW');
+    </script>
+    <script async src="https://fundingchoicesmessages.google.com/i/pub-5521219086088837?ers=1"></script><script>(function() {function signalGooglefcPresent() {if (!window.frames['googlefcPresent']) {if (document.body) {const iframe = document.createElement('iframe'); iframe.style = 'width: 0; height: 0; border: none; z-index: -1000; left: -1000px; top: -1000px;'; iframe.style.display = 'none'; iframe.name = 'googlefcPresent'; document.body.appendChild(iframe);} else {setTimeout(signalGooglefcPresent, 0);}}}signalGooglefcPresent();})();</script>
+    <script src="https://cdn.jsdelivr.net/gh/gn-math/gn-math.github.io@main/gnmath.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime List - gn-math</title>
+    <meta name="title" content="Anime List - gn-math">
+    <meta name="description" content="Browse top-rated anime series and movies. Search, filter, and discover new favorites.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://gn-math.github.io/anime.html">
+    <meta property="og:title" content="Anime List - gn-math">
+    <meta property="og:description" content="Browse top-rated anime series and movies. Search, filter, and discover new favorites.">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://gn-math.github.io/anime.html">
+    <meta name="twitter:title" content="Anime List - gn-math">
+    <meta name="twitter:description" content="Browse top-rated anime series and movies. Search, filter, and discover new favorites.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-mode">
+    <header>
+        <div class="header-content">
+            <a href="index.html" style="text-decoration: none; color: inherit;">
+                <div class="logo">gn-math</div>
+            </a>
+            <div class="search-container">
+                <input type="text" id="animeSearchBar" placeholder="Search anime..." oninput="filterAnime()">
+                <select id="animeSortOptions" onchange="sortAnime()">
+                    <option value="rank">Rank</option>
+                    <option value="popularity">Popularity</option>
+                    <option value="title">Title</option>
+                    <option value="score">Score</option>
+                    <option value="year">Year</option>
+                    <option value="type">Type</option>
+                </select>
+                <select id="animeFilterOptions" onchange="filterAnime()">
+                    <option value="all">All Types</option>
+                    <option value="TV">TV Series</option>
+                    <option value="Movie">Movies</option>
+                    <option value="OVA">OVA</option>
+                    <option value="ONA">ONA</option>
+                    <option value="Special">Specials</option>
+                    <option value="Music">Music</option>
+                </select>
+            </div>
+            <div class="control-buttons">
+                <a href="index.html" class="control-button" title="Back to Games">
+                    <img src="refresh-icon.png" alt="games">
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div id="animeStats" style="margin-bottom: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+            <span id="animeCount" style="font-size: 14px; color: var(--text-muted); font-weight: 600; display: flex; align-items: center; gap: 0.5rem;">
+                <span style="width: 4px; height: 4px; border-radius: 50%; background: var(--primary);"></span>
+                <span id="animeCountText">Loading...</span>
+            </span>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;" id="typeFilters"></div>
+        </div>
+
+        <details id="animeSeriesWrapper" open>
+            <summary class="section-summary">Anime Series <span id="seriesCount" class="count-badge">0</span></summary>
+            <div id="animeSeriesContainer" class="anime-container"></div>
+        </details>
+        <br><hr><br>
+        <details id="animeMoviesWrapper" open>
+            <summary class="section-summary">Movies <span id="moviesCount" class="count-badge">0</span></summary>
+            <div id="animeMoviesContainer" class="anime-container"></div>
+        </details>
+        <br><hr><br>
+        <details id="animeOvaWrapper" open>
+            <summary class="section-summary">OVA/ONA/Specials <span id="ovaCount" class="count-badge">0</span></summary>
+            <div id="animeOvaContainer" class="anime-container"></div>
+        </details>
+    </main>
+
+    <div id="animeModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalTitle">Title</h3>
+                <button id="modalClose" onclick="closeModal()">×</button>
+            </div>
+            <div id="modalBody" class="modal-body"></div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <a href="index.html">Games</a>
+            <a href="anime.html" style="color: var(--primary);">Anime</a>
+            <a href="#" onclick="loadDMCA(); return false;">DMCA</a>
+            <a href="#" onclick="showContact(); return false;">Contact</a>
+            <a href="#" onclick="loadPrivacy(); return false;">Privacy Policy</a>
+        </div>
+    </footer>
+    <script src="anime.js"></script>
+    <script>
+        const search = new URLSearchParams(window.location.search);
+        const privacy = search.get('privacy');
+        if (privacy) {
+            loadPrivacy();
+        }
+    </script>
+</body>
+</html>
