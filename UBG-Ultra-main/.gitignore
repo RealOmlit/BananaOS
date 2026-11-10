@@ -1,0 +1,13 @@
+# Python build/runtime artifacts
+__pycache__/
+*.py[cod]
+
+# Local runtime state and diagnostics
+server_data/*.json
+startup-error.log
+
+# Editor and Windows metadata
+.vscode/
+.idea/
+desktop.ini
+Thumbs.db
